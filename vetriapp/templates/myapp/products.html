@@ -1,0 +1,370 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}Products{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+  :root{
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:#e5e7eb;
+    --card:#ffffff;
+    --bg:#f6f8ff;
+    --shadow: 0 16px 55px rgba(2,6,23,.10);
+    --r14:14px;
+    --r18:18px;
+    --r22:22px;
+  }
+
+  /* page wrap */
+  .ve-page{
+    background:
+      radial-gradient(900px 400px at 10% 0%, rgba(255,215,0,.16), transparent 60%),
+      radial-gradient(900px 400px at 90% 10%, rgba(255,180,0,.12), transparent 60%),
+      var(--bg);
+    padding: 22px 0 40px;
+    min-height: 70vh;
+  }
+
+  /* heading */
+  .ve-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .ve-title{
+    margin:0;
+    font-weight: 1000;
+    color: var(--ink);
+    letter-spacing: .2px;
+  }
+  .ve-sub{
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* product card */
+  .ve-card{
+    background: var(--card);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r22);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(2,6,23,.06);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    height: 100%;
+    position: relative;
+  }
+  .ve-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 22px 60px rgba(2,6,23,.12);
+    border-color: rgba(255,180,0,.35);
+  }
+
+  /* image box */
+  .ve-img{
+    background: linear-gradient(180deg, #ffffff, #f3f6ff);
+    padding: 14px;
+    position: relative;
+  }
+  .ve-img a{ display:block; }
+  .ve-img img{
+    width:100%;
+    height: 170px;
+    object-fit: contain;
+    transition: transform .18s ease;
+  }
+  .ve-card:hover .ve-img img{ transform: scale(1.05); }
+
+  /* badges */
+  .ve-badges{
+    position:absolute;
+    left: 12px;
+    top: 12px;
+    display:flex;
+    gap: 8px;
+    z-index: 3;
+  }
+  .ve-badge{
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 1000;
+    border: 1px solid rgba(0,0,0,.06);
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(8px);
+    color: var(--ink);
+  }
+  .ve-badge.off{
+    background: rgba(255,215,0,.92);
+  }
+  .ve-badge.stockout{
+    background: rgba(239,68,68,.92);
+    color:#fff;
+  }
+
+  /* body */
+  .ve-body{
+    padding: 14px 14px 16px;
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ve-name{
+    margin:0;
+    font-weight: 950;
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.3;
+    min-height: 36px;
+  }
+
+  .ve-price{
+    display:flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .ve-price del{
+    color: #94a3b8;
+    font-weight: 800;
+    font-size: 13px;
+  }
+  .ve-price .now{
+    font-weight: 1000;
+    color: var(--ink);
+    font-size: 16px;
+  }
+
+  /* qty stepper */
+  .ve-qty{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 10px;
+    box-shadow: 0 10px 25px rgba(2,6,23,.05);
+  }
+  .ve-qbtn{
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.06);
+    background: rgba(255,215,0,.75);
+    color: #111827;
+    font-weight: 1000;
+    cursor: pointer;
+    transition: .15s ease;
+  }
+  .ve-qbtn:hover{ filter: brightness(.97); transform: translateY(-1px); }
+  .ve-qval{
+    width: 44px;
+    text-align:center;
+    font-weight: 1000;
+    border: none;
+    background: transparent;
+    color: var(--ink);
+  }
+
+  /* add to cart button */
+  .ve-btn{
+    width:100%;
+    border:none;
+    border-radius: 14px;
+    padding: 11px 12px;
+    font-weight: 1000;
+    cursor:pointer;
+    transition: .15s ease;
+  }
+  .ve-btn.cart{
+    background: var(--yellow);
+    color:#111827;
+    box-shadow: 0 16px 40px rgba(255,180,0,.18);
+  }
+  .ve-btn.cart:hover{ transform: translateY(-1px); filter: brightness(.98); }
+  .ve-btn.out{
+    background: #ef4444;
+    color:#fff;
+    cursor:not-allowed;
+    opacity: .95;
+  }
+
+  /* out of stock overlay */
+  .ve-overlay{
+    position:absolute;
+    inset:0;
+    background: rgba(255,255,255,.65);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    font-weight: 1000;
+    color:#111827;
+    z-index: 5;
+    backdrop-filter: blur(3px);
+  }
+  .ve-card.stockout .ve-overlay{ display:flex; }
+  .ve-card.stockout .ve-qbtn,
+  .ve-card.stockout .ve-qval{ opacity:.5; pointer-events:none; }
+
+  /* small */
+  .ve-empty{
+    padding: 26px 0;
+    text-align:center;
+    color: var(--muted);
+    font-weight: 800;
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="ve-page">
+  <div class="container">
+
+    <div class="ve-head">
+      <div>
+        {% if selected_category %}
+          <h2 class="ve-title">{{ selected_category.category_name }}</h2>
+          <p class="ve-sub">Choose your favorite product and add to cart</p>
+        {% else %}
+          <h2 class="ve-title">Products</h2>
+          <p class="ve-sub">Explore our latest electronics</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for product in products %}
+
+      {# discount calc (only if original_price exists and greater) #}
+      {% with op=product.original_price np=product.price %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="ve-card {% if not product.in_stock %}stockout{% endif %}">
+
+          <div class="ve-img">
+            <div class="ve-badges">
+              {% if op and op > np %}
+                {% with diff=op|floatformat:2 %}
+                <span class="ve-badge off">Offer</span>
+                {% endwith %}
+              {% endif %}
+              {% if not product.in_stock %}
+                <span class="ve-badge stockout">Out</span>
+              {% endif %}
+            </div>
+
+            <a href="{% url 'product_details' product.id %}">
+              <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            </a>
+          </div>
+
+          <div class="ve-body">
+            <p class="ve-name">{{ product.name }}</p>
+
+            <div class="ve-price">
+              {% if op and op > np %}
+                <del>₹{{ product.original_price }}</del>
+              {% endif %}
+              <span class="now">₹{{ product.price }}</span>
+            </div>
+
+            <div class="ve-qty">
+              <button class="ve-qbtn" type="button" onclick="decreaseQty('{{ product.id }}')">-</button>
+              <input class="ve-qval" type="text" id="qty-{{ product.id }}" value="1" readonly>
+              <button class="ve-qbtn" type="button" onclick="increaseQty('{{ product.id }}', '{{ product.in_stock_qty }}')">+</button>
+            </div>
+
+            {% if product.in_stock %}
+              <button class="ve-btn cart" type="button"
+                onclick="addToCart('{{ product.id }}', '{{ request.user.is_authenticated }}')">
+                Add to <i class="fa-solid fa-cart-shopping"></i>
+              </button>
+            {% else %}
+              <button class="ve-btn out" type="button" disabled>
+                Out of Stock
+              </button>
+            {% endif %}
+          </div>
+
+          <div class="ve-overlay">
+            Out of Stock
+          </div>
+
+        </div>
+      </div>
+      {% endwith %}
+
+      {% empty %}
+        <div class="col-12">
+          <div class="ve-empty">No products available in this category.</div>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+  function increaseQty(productId, maxStock) {
+    const qtyInput = document.getElementById("qty-" + productId);
+    let currentQty = parseInt(qtyInput.value || "1");
+
+    // maxStock can be empty in template sometimes
+    const max = parseInt(maxStock || "999999");
+
+    if (currentQty < max) {
+      qtyInput.value = currentQty + 1;
+    } else {
+      alert("Only " + max + " items available in stock!");
+    }
+  }
+
+  function decreaseQty(productId) {
+    const qtyInput = document.getElementById("qty-" + productId);
+    let currentQty = parseInt(qtyInput.value || "1");
+    if (currentQty > 1) qtyInput.value = currentQty - 1;
+  }
+
+  function addToCart(productId, isAuthenticated) {
+    if (isAuthenticated === "False") {
+      alert("Please log in to add items to the cart.");
+      window.location.href = "{% url 'login' %}";
+      return;
+    }
+
+    const qty = parseInt(document.getElementById("qty-" + productId).value || "1");
+
+    fetch("{% url 'add_to_cart' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: JSON.stringify({ product_id: productId, quantity: qty })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Product added to cart successfully!");
+        const cartCountElement = document.getElementById("cart-count");
+        if (cartCountElement) cartCountElement.innerText = data.cart_count;
+      } else {
+        alert(data.message || "Something went wrong!");
+      }
+    })
+    .catch(err => console.error("Error:", err));
+  }
+</script>
+{% endblock script %}

@@ -1,0 +1,262 @@
+
+.track-container {
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+}
+.order-div{
+    width: 80%;
+    margin: 10px auto;
+}
+.product-image {
+    width: 150px;
+    height: 150px;
+    border: 2px solid #4CAF50;
+    border-radius: 10px;
+    padding: 10px;
+    display: block;
+    margin: auto 25px;
+}
+.progress-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    position: relative;
+    background-color: transparent;
+    color: black;
+}
+.progress-bar div {
+    flex: 1;
+    text-align: center;
+    position: relative;
+}
+.progress-container {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+height: 100vh; 
+margin-top: -120px;
+}
+.progress-bar {
+display: flex;
+flex-direction: column; 
+align-items: center;
+position: relative;
+gap: 20px;
+}
+
+.progress-bar .line {
+position: absolute;
+width: 4px; 
+height: 80%; 
+background-color: lightgray;
+left: 50%;
+transform: translateX(-50%);
+z-index: -1;
+}
+
+.step {
+display: flex;
+flex-direction: column;
+align-items: center;
+text-align: center;
+position: relative;
+}
+.step p {
+margin-top: 10px;
+margin-right: 150px;
+font-size: 14px;
+color: black;
+font-weight: 500;
+transform: translateY(-30px);
+}
+.progress-bar span {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: lightgray;
+    position: relative;
+}
+.progress-bar .active span {
+    background-color: #FFD700;
+}
+
+.progress-bar .active-line {
+    background-color: yellow;
+}
+.borders{
+    width: 500px;
+    padding: 10px;
+    height: 200px;
+}
+.flex-div{
+    width: 80%;
+    margin-left: 10%;
+    border: 2px solid #FFD700;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-evenly;
+    height: 400px;
+}
+
+@media (max-width: 1440px){
+    .progress-bar {
+        margin-top: -350px;
+        }
+}
+@media (max-width: 1024px) {
+    .order-div {
+        width: 90%;
+    }
+
+    .product-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    .progress-container {
+        height: auto;
+        margin-top: 0px;
+    }
+
+    .borders {
+        width: 400px;
+        height: 180px;
+        border: none;
+    }
+
+    .flex-div {
+        width: 90%;
+        margin-left: 5%;
+        height: 350px;
+    }
+    .progress-bar {
+        margin-top: 20px;
+        }
+
+}
+
+@media (max-width: 768px) {
+    .order-div {
+        width: 90%;
+        margin-left: 60px;
+    }
+    .product-image {
+        width: 100px;
+        height: 100px;
+    }
+    .progress-container {
+        flex-direction: column;
+        height: auto;
+        margin-top: 0px;
+    }
+    .progress-bar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .progress-bar .line {
+        width: 85%;
+        height: 4px;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+    }
+
+    .step {
+        flex-direction: row;
+        justify-content: center;
+    }
+    .step p {
+        margin-right: 0;
+        font-size: 12px;
+        transform: translateY(-10px);
+    }
+
+    .borders {
+        width: 550px;
+        height: 200px;
+        border: none;
+    }
+
+    .flex-div {
+        flex-direction: column;
+        height: 520px;
+        align-items: center;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 426px) {
+    .track-container {
+        padding: 10px;
+    }
+
+    .order-div {
+        width: 80%;
+        margin: 5px auto;
+    }
+
+    .product-image {
+        width: 80px;
+        height: 80px;
+        margin: auto;
+    }
+
+    .progress-container {
+        flex-direction: column;
+        height: auto;
+        margin-top: 0px;
+    }
+
+    .progress-bar {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .progress-bar .line {
+        width: 85%;
+        height: 3px;
+    }
+
+    .step p {
+        font-size: 10px;
+        transform: translateY(-10px);
+    }
+
+    .borders {
+        width: 280px;
+        height: 180px;
+        font-size: 12px;
+        transform: translateY(-80px);
+        border: none;
+    }
+    .flex-div {
+        width: 90%;
+        border-radius: 15px;
+        flex-direction: column;
+        height: auto;
+        align-items: center;
+        padding: 15px;
+    }
+}
+@media screen and (max-width: 320px) {
+    .progress-bar {
+        flex-direction: row;
+        gap: 2px;
+        width: 250px;
+    }
+
+    .progress-bar .line {
+        width: 85%;
+        height: 3px;
+    }
+
+    .step p {
+        font-size: 7px;
+        transform: translateY(-10px);
+    }
+}

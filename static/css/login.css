@@ -1,0 +1,164 @@
+/* .login-div {
+    width: 100%;
+    max-width: 350px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-div input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.login-div button {
+    width: 100%;
+    padding: 12px;
+    background: #007BFF;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-div button:hover {
+    background: #0056b3;
+}
+
+.login-div p {
+    color: red;
+    font-size: 14px;
+}
+
+@media (max-width: 480px) {
+    .login-div {
+        width: 90%;
+        padding: 15px;
+    }
+}
+
+.login-div a {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.login-div a:hover {
+    text-decoration: underline;
+} */
+
+
+/* Main container for login page */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background: linear-gradient(360deg, #6B8E23, #FFD700);
+}
+
+/* Left Side Image */
+.image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    /* background: #f8f9fa; */
+}
+
+.image-container img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.login-div {
+    flex: 1;
+    padding: 40px;
+    text-align: center;
+}
+.login-div a {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #030303;
+    text-decoration: none;
+}
+.login-div input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.login-div button {
+    width: 100%;
+    padding: 12px;
+    background: #007BFF;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-div button:hover {
+    background: #0056b3;
+}
+
+.login-div p {
+    color: red;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+
+    .image-container {
+        padding: 10px;
+    }
+
+    .image-container img {
+        max-width: 200px;
+    }
+
+    .login-div {
+        padding: 20px;
+    }
+}
+
+/* Register link styling */
+.login-div a {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #dddcf8;
+    text-decoration: none;
+}
+
+.login-div a:hover {
+    text-decoration: underline;
+}

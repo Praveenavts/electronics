@@ -1,0 +1,650 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}Cart{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<style>
+  :root{
+    --brand:#0a1f63;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:rgba(15,23,42,.12);
+    --bg:#f7f9ff;
+    --card:#ffffff;
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --shadow: 0 26px 90px rgba(2,6,23,.12);
+    --r16:16px;
+    --r22:22px;
+    --r28:28px;
+  }
+
+  .vc-page{
+    background:
+      radial-gradient(900px 460px at 12% 0%, rgba(255,215,0,.16), transparent 60%),
+      radial-gradient(900px 460px at 90% 10%, rgba(10,31,99,.10), transparent 62%),
+      var(--bg);
+    padding: 30px 0 60px;
+    min-height: 70vh;
+  }
+
+  .vc-head{
+    text-align:center;
+    margin-bottom: 14px;
+  }
+  .vc-head h2{
+    margin:0;
+    font-weight: 1200;
+    color: var(--ink);
+    font-size: clamp(22px, 2.8vw, 34px);
+  }
+  .vc-head p{
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-weight: 750;
+  }
+
+  .vc-shell{
+    background: var(--card);
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: var(--r28);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  .vc-topbar{
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(15,23,42,.08);
+    background: linear-gradient(180deg,#fff,#f7f9ff);
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .vc-badge{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,215,0,.22);
+    border: 1px solid rgba(255,180,0,.35);
+    color:#7a4b00;
+    font-weight: 1000;
+    font-size: 13px;
+  }
+
+  .vc-hint{
+    color: rgba(15,23,42,.70);
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  .vc-grid{
+    display:grid;
+    grid-template-columns: 1.6fr .8fr;
+    gap: 0;
+  }
+
+  .vc-left{
+    padding: 16px;
+    border-right: 1px solid rgba(15,23,42,.08);
+  }
+
+  .vc-item{
+    display:grid;
+    grid-template-columns: 110px 1fr auto;
+    gap: 14px;
+    padding: 14px;
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: var(--r22);
+    background:#fff;
+    box-shadow: 0 14px 45px rgba(2,6,23,.06);
+    margin-bottom: 12px;
+    align-items:center;
+  }
+
+  .vc-img{
+    width:110px;
+    height:110px;
+    border-radius: 18px;
+    border: 1px solid rgba(15,23,42,.10);
+    background: linear-gradient(180deg,#fff,#f3f6ff);
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+  }
+
+  .vc-img img{
+    width:100%;
+    height:100%;
+    object-fit: contain;
+    padding: 10px;
+  }
+
+  .vc-info h5{
+    margin:0;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.25;
+  }
+
+  .vc-meta{
+    margin-top: 6px;
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items:center;
+    color: var(--muted);
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  .vc-chip{
+    display:inline-flex;
+    align-items:center;
+    gap: 7px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(15,23,42,.10);
+    background: rgba(10,31,99,.06);
+    color: #0a1f63;
+    font-weight: 1000;
+    font-size: 12px;
+  }
+
+  .vc-qtyRow{
+    margin-top: 10px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .vc-qty{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    background:#fff;
+    border: 1px solid rgba(15,23,42,.12);
+    border-radius: 999px;
+    padding: 8px 10px;
+  }
+
+  .vc-qbtn{
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 1px solid rgba(15,23,42,.10);
+    background: rgba(255,215,0,.88);
+    color:#111827;
+    font-weight: 1200;
+    cursor:pointer;
+    transition:.15s ease;
+  }
+
+  .vc-qbtn:hover{
+    transform: translateY(-1px);
+    filter: brightness(.98);
+  }
+
+  .vc-qval{
+    min-width: 40px;
+    text-align:center;
+    font-weight: 1200;
+    color: var(--ink);
+  }
+
+  .vc-remove{
+    border: 1px solid rgba(239,68,68,.25);
+    background: rgba(239,68,68,.08);
+    color:#b91c1c;
+    font-weight: 1000;
+    border-radius: 12px;
+    padding: 10px 12px;
+    cursor:pointer;
+    transition:.15s ease;
+  }
+
+  .vc-remove:hover{
+    transform: translateY(-1px);
+  }
+
+  .vc-price{
+    text-align:right;
+    display:flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items:flex-end;
+  }
+
+  .vc-price del{
+    color:#94a3b8;
+    font-weight: 900;
+    font-size: 13px;
+  }
+
+  .vc-lineTotal{
+    font-weight: 1200;
+    color: var(--ink);
+    font-size: 18px;
+  }
+
+  .vc-unit{
+    color: var(--muted);
+    font-weight: 800;
+    font-size: 12px;
+  }
+
+  .vc-right{
+    padding: 16px;
+    background: linear-gradient(180deg,#fff,#fbfbff);
+  }
+
+  .vc-summary{
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: var(--r28);
+    background:#fff;
+    box-shadow: 0 18px 60px rgba(2,6,23,.08);
+    padding: 16px;
+    position: sticky;
+    top: 110px;
+  }
+
+  .vc-summary h4{
+    margin: 0 0 10px;
+    font-weight: 1200;
+    color: var(--ink);
+  }
+
+  .vc-row{
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    gap: 12px;
+    padding: 8px 0;
+    color: rgba(15,23,42,.85);
+    font-weight: 900;
+  }
+
+  .vc-row small{
+    color: var(--muted);
+    font-weight: 800;
+  }
+
+  .vc-divider{
+    height: 1px;
+    background: rgba(15,23,42,.10);
+    margin: 10px 0;
+  }
+
+  .vc-total{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-weight: 1300;
+    color: var(--ink);
+    font-size: 18px;
+  }
+
+  .vc-checkout{
+    width:100%;
+    margin-top: 12px;
+    border:none;
+    border-radius: 18px;
+    padding: 12px 14px;
+    font-weight: 1200;
+    background: linear-gradient(120deg, var(--yellow), var(--yellow2));
+    color:#111827;
+    box-shadow: 0 18px 45px rgba(255,180,0,.18);
+    transition:.15s ease;
+  }
+
+  .vc-checkout:hover{
+    transform: translateY(-1px);
+  }
+
+  .vc-note{
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    color: rgba(15,23,42,.70);
+    text-align:center;
+  }
+
+  .vc-empty{
+    background:#fff;
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: var(--r28);
+    box-shadow: var(--shadow);
+    padding: 30px 20px;
+    text-align:center;
+  }
+
+  .vc-empty .ico{
+    width: 76px;
+    height: 76px;
+    border-radius: 24px;
+    display:grid;
+    place-items:center;
+    margin: 0 auto 12px;
+    background: rgba(255,215,0,.22);
+    border: 1px solid rgba(255,180,0,.35);
+    color:#7a4b00;
+    font-size: 28px;
+  }
+
+  .vc-empty h3{
+    margin:0;
+    font-weight: 1200;
+    color: var(--ink);
+  }
+
+  .vc-empty p{
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-weight: 800;
+  }
+
+  @media (max-width: 992px){
+    .vc-grid{
+      grid-template-columns: 1fr;
+    }
+
+    .vc-left{
+      border-right: none;
+      border-bottom: 1px solid rgba(15,23,42,.08);
+    }
+
+    .vc-summary{
+      position: static;
+      top: auto;
+    }
+  }
+
+  @media (max-width: 576px){
+    .vc-item{
+      grid-template-columns: 92px 1fr;
+    }
+
+    .vc-price{
+      grid-column: 1 / -1;
+      align-items:flex-start;
+      text-align:left;
+      margin-top: 8px;
+    }
+
+    .vc-img{
+      width:92px;
+      height:92px;
+      border-radius: 16px;
+    }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<section class="vc-page">
+  <div class="container">
+
+    <div class="vc-head">
+      <h2>My Cart</h2>
+      <p>Review items, update quantity, and proceed to checkout</p>
+    </div>
+
+    {% if cart_items %}
+    <div class="vc-shell">
+      <div class="vc-topbar">
+        <span class="vc-badge">
+          <i class="fa-solid fa-bag-shopping"></i>
+          {{ cart_items|length }} items in your cart
+        </span>
+        <span class="vc-hint">
+          <i class="fa-solid fa-shield-halved"></i>
+          Secure checkout
+        </span>
+      </div>
+
+      <div class="vc-grid">
+
+        <div class="vc-left">
+          {% for item in cart_items %}
+          {% with unit_price=item.product.price|default:item.product.original_price %}
+          <div id="cart-item-{{ item.id }}" class="vc-item">
+
+            <div class="vc-img">
+              {% if item.product.image %}
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+              {% else %}
+                <img src="{% static 'images/no-image.png' %}" alt="No image">
+              {% endif %}
+            </div>
+
+            <div class="vc-info">
+              <h5>{{ item.product.name }}</h5>
+
+              <div class="vc-meta">
+                <span class="vc-chip"><i class="fa-solid fa-star"></i> 4.5</span>
+
+                {% if item.product.in_stock_qty > 0 %}
+                  <span class="vc-chip" style="background:rgba(16,185,129,.12);color:#065f46;border-color:rgba(16,185,129,.25);">
+                    <i class="fa-solid fa-check"></i> In Stock
+                  </span>
+                {% else %}
+                  <span class="vc-chip" style="background:rgba(239,68,68,.10);color:#b91c1c;border-color:rgba(239,68,68,.25);">
+                    <i class="fa-solid fa-xmark"></i> Out of Stock
+                  </span>
+                {% endif %}
+              </div>
+
+              <div class="vc-qtyRow">
+                {% if item.product.in_stock_qty > 0 %}
+                <div class="vc-qty">
+                  <button
+                    class="vc-qbtn"
+                    type="button"
+                    onclick="updateCart('{{ item.id }}', 'decrease', '{{ item.product.in_stock_qty }}')">-</button>
+
+                  <span class="vc-qval" id="qty-{{ item.id }}">{{ item.quantity }}</span>
+
+                  <button
+                    class="vc-qbtn"
+                    type="button"
+                    onclick="updateCart('{{ item.id }}', 'increase', '{{ item.product.in_stock_qty }}')">+</button>
+                </div>
+                {% endif %}
+
+                <button class="vc-remove" type="button" onclick="removeFromCart('{{ item.id }}')">
+                  <i class="fa-solid fa-trash"></i> Remove
+                </button>
+              </div>
+            </div>
+
+            <div class="vc-price">
+              {% if item.product.original_price %}
+                <del>₹{{ item.product.original_price|floatformat:2 }}</del>
+              {% endif %}
+
+              <div
+                class="vc-lineTotal"
+                id="price-{{ item.id }}"
+                data-unit-price="{{ unit_price|floatformat:2 }}">
+                ₹{{ unit_price|floatformat:2|add:"0" }}
+              </div>
+
+              <div class="vc-unit">Unit: ₹{{ unit_price|floatformat:2 }}</div>
+            </div>
+
+          </div>
+          {% endwith %}
+          {% endfor %}
+        </div>
+
+        <div class="vc-right">
+          <div class="vc-summary">
+            <h4>Order Summary</h4>
+
+            <div class="vc-row">
+              <span>Subtotal</span>
+              <span id="subtotal">₹{{ total_price|floatformat:2 }}</span>
+            </div>
+
+            <div class="vc-row">
+              <span>Delivery</span>
+              <small>Free</small>
+            </div>
+
+            <div class="vc-divider"></div>
+
+            <div class="vc-total">
+              <span>Total</span>
+              <span id="order-total">₹{{ total_price|floatformat:2 }}</span>
+            </div>
+
+            <button class="vc-checkout" type="button" onclick="proceedToCheckout()">
+              Proceed to Checkout <i class="fa-solid fa-arrow-right ms-1"></i>
+            </button>
+
+            <div class="vc-note">Prices include applicable taxes. Secure payment.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {% else %}
+    <div class="vc-empty">
+      <div class="ico"><i class="fa-solid fa-cart-shopping"></i></div>
+      <h3>Your cart is empty</h3>
+      <p>Add products to continue shopping.</p>
+
+      {% if cart_empty %}
+      <p class="mt-2">
+        <a href="{% url 'login' %}" class="text-decoration-none" style="font-weight:1000;color:var(--brand);">
+          Login
+        </a> to add items.
+      </p>
+      {% endif %}
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script>
+  function updateCart(cartId, action, stockQty) {
+    fetch("{% url 'update_cart' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: JSON.stringify({
+        cart_id: cartId,
+        action: action
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.success) {
+        alert(data.message || "Failed to update cart.");
+        return;
+      }
+
+      const qtyEl = document.getElementById(`qty-${cartId}`);
+      const priceEl = document.getElementById(`price-${cartId}`);
+      const unitPrice = parseFloat(priceEl.getAttribute("data-unit-price")) || 0;
+      let currentQty = parseInt(qtyEl.innerText || "1");
+      const max = parseInt(stockQty || "999999");
+
+      if (action === "increase" && currentQty < max) {
+        currentQty += 1;
+      } else if (action === "decrease" && currentQty > 1) {
+        currentQty -= 1;
+      } else if (action === "increase" && currentQty >= max) {
+        alert("Only " + max + " items available in stock!");
+      }
+
+      qtyEl.innerText = currentQty;
+
+      const newLineTotal = unitPrice * currentQty;
+      priceEl.innerText = "₹" + newLineTotal.toFixed(2);
+
+      recalculateTotal();
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("Something went wrong while updating cart.");
+    });
+  }
+
+  function recalculateTotal() {
+    let total = 0;
+
+    document.querySelectorAll("[id^='price-']").forEach(el => {
+      const value = parseFloat((el.innerText || "0").replace("₹", "").trim()) || 0;
+      total += value;
+    });
+
+    document.getElementById("subtotal").innerText = "₹" + total.toFixed(2);
+    document.getElementById("order-total").innerText = "₹" + total.toFixed(2);
+  }
+
+  function removeFromCart(cartId) {
+    if (!confirm("Remove this item from cart?")) return;
+
+    fetch("{% url 'remove_from_cart' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: JSON.stringify({
+        cart_id: cartId
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.success) {
+        alert(data.message || "Failed to remove item.");
+        return;
+      }
+
+      const cartNode = document.getElementById(`cart-item-${cartId}`);
+      if (cartNode) {
+        cartNode.remove();
+      }
+
+      const cartCount = document.getElementById("cart-count");
+      if (cartCount) {
+        cartCount.innerText = data.cart_count;
+      }
+
+      recalculateTotal();
+
+      if (document.querySelectorAll(".vc-item").length === 0) {
+        window.location.reload();
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("Something went wrong while removing cart item.");
+    });
+  }
+
+  function proceedToCheckout() {
+    window.location.href = "{% url 'payment_page' %}";
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    recalculateTotal();
+  });
+</script>
+{% endblock script %}

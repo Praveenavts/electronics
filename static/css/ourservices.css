@@ -1,0 +1,49 @@
+.service-container{
+    width: 100%;
+}
+.banner{
+    width: 100%;
+}
+.banner img{
+    width: 100%;
+    object-fit: cover;
+}
+
+.content-box1{
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+
+}
+.content-1 img{
+    width: 400px;
+}
+.content-2{
+    width: 90%;
+    margin: auto;
+}
+.content-3 img{
+    width: 60%;
+    margin-left: 20%;
+}
+.htag{
+    width: 550px;
+    margin: auto;
+}
+.form-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 5px 5px 15px;
+}
+.btn-submit {
+    background-color: #6b8e23;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    display: block;
+    width: 100%;
+}

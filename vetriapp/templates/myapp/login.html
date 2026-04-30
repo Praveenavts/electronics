@@ -1,0 +1,344 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+  :root{
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:#e5e7eb;
+    --card:#ffffff;
+    --bg:#f6f8ff;
+    --shadow: 0 16px 60px rgba(2,6,23,.12);
+    --r14:14px;
+    --r18:18px;
+    --r24:24px;
+  }
+
+  /* Page background */
+  .auth-wrap{
+    min-height: calc(100vh - 90px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 28px 14px;
+    background:
+      radial-gradient(900px 400px at 10% 10%, rgba(255,215,0,.22), transparent 60%),
+      radial-gradient(900px 400px at 90% 20%, rgba(255,180,0,.18), transparent 60%),
+      var(--bg);
+  }
+
+  /* Main card */
+  .auth-card{
+    width: min(980px, 100%);
+    background: var(--card);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r24);
+    overflow:hidden;
+    box-shadow: var(--shadow);
+    display:grid;
+    grid-template-columns: 1.1fr 1fr;
+  }
+
+  /* Left banner */
+  .auth-left{
+    padding: 28px;
+    background: linear-gradient(135deg, rgba(255,215,0,.95), rgba(255,180,0,.88));
+    position: relative;
+    color:#111827;
+  }
+  .auth-left::after{
+    content:"";
+    position:absolute;
+    right:-70px; top:-70px;
+    width: 220px; height: 220px;
+    background: rgba(255,255,255,.35);
+    border-radius: 60px;
+    transform: rotate(18deg);
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight: 1000;
+    font-size: 20px;
+    position: relative;
+    z-index: 2;
+  }
+  .brand i{
+    width: 46px; height: 46px;
+    border-radius: 16px;
+    display:grid;
+    place-items:center;
+    background: rgba(255,255,255,.55);
+    border: 1px solid rgba(0,0,0,.08);
+  }
+  .auth-left h2{
+    margin: 22px 0 10px;
+    font-weight: 1000;
+    position: relative;
+    z-index: 2;
+  }
+  .auth-left p{
+    margin: 0;
+    color: rgba(17,24,39,.85);
+    line-height: 1.6;
+    position: relative;
+    z-index: 2;
+  }
+  .bullets{
+    margin-top: 18px;
+    display:grid;
+    gap:10px;
+    position: relative;
+    z-index: 2;
+  }
+  .bullet{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background: rgba(255,255,255,.55);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r18);
+    padding: 10px 12px;
+  }
+  .bullet i{ margin-top: 2px; }
+  .bullet b{ display:block; font-weight: 1000; }
+  .bullet small{ color: rgba(17,24,39,.75); }
+
+  /* Right form */
+  .auth-right{
+    padding: 30px 26px;
+    background:#fff;
+  }
+  .auth-title{
+    font-weight: 1000;
+    color: var(--ink);
+    margin: 0 0 6px;
+    font-size: 26px;
+  }
+  .auth-sub{
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* Error alert */
+  .auth-alert{
+    background: #fff1f1;
+    border: 1px solid #ffd0d0;
+    color: #b42318;
+    border-radius: var(--r14);
+    padding: 10px 12px;
+    font-weight: 800;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  /* Inputs */
+  .field{
+    margin-bottom: 12px;
+  }
+  .label{
+    display:block;
+    font-weight: 900;
+    font-size: 13px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .input{
+    width: 100%;
+    padding: 12px 12px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    outline:none;
+    font-size: 15px;
+    background:#fff;
+    transition: .15s ease;
+  }
+  .input:focus{
+    border-color: rgba(255,180,0,.85);
+    box-shadow: 0 14px 40px rgba(255,180,0,.18);
+  }
+
+  /* Password with icon */
+  .pass-wrap{ position: relative; }
+  .toggle-pass{
+    position:absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border:none;
+    background: transparent;
+    color: #64748b;
+    cursor:pointer;
+    padding: 6px 8px;
+    border-radius: 10px;
+  }
+  .toggle-pass:hover{ background:#f3f4f6; }
+
+  /* Button */
+  .btn-login{
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 12px 14px;
+    background: var(--yellow);
+    color:#111827;
+    font-weight: 1000;
+    font-size: 15px;
+    cursor:pointer;
+    box-shadow: 0 16px 40px rgba(255,180,0,.22);
+    transition: .15s ease;
+    margin-top: 6px;
+  }
+  .btn-login:hover{
+    transform: translateY(-1px);
+    filter: brightness(.98);
+  }
+
+  /* Links */
+  .auth-links{
+    margin-top: 14px;
+    display:flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 14px;
+  }
+  .auth-links a{
+    text-decoration: none;
+    font-weight: 900;
+    color: #111827;
+  }
+  .auth-links a:hover{ text-decoration: underline; }
+
+  .divider{
+    margin: 16px 0 10px;
+    border-top: 1px dashed #e5e7eb;
+  }
+  .mini{
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0;
+  }
+
+  /* Mobile */
+  @media (max-width: 900px){
+    .auth-card{ grid-template-columns: 1fr; }
+    .auth-left{ padding: 22px; }
+    .auth-right{ padding: 22px; }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+
+    <!-- LEFT -->
+    <div class="auth-left">
+      <div class="brand">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>Vetri Electronics</span>
+      </div>
+
+      <h2>Welcome Back 👋</h2>
+    
+
+      <div class="bullets">
+        <div class="bullet">
+          <i class="fa-solid fa-bolt"></i>
+          <div>
+            <b>Fast Shopping</b>
+            <small>Quick search + quick checkout</small>
+          </div>
+        </div>
+        <div class="bullet">
+          <i class="fa-solid fa-shield-halved"></i>
+          <div>
+            <b>Secure</b>
+            <small>Safe login & payments</small>
+          </div>
+        </div>
+        <div class="bullet">
+          <i class="fa-solid fa-headset"></i>
+          <div>
+            <b>Support</b>
+            <small>Anytime help available</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="auth-right">
+      <h1 class="auth-title">Login</h1>
+      <p class="auth-sub">Enter your username & password to continue</p>
+
+      {% if error %}
+        <div class="auth-alert">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          {{ error }}
+        </div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="field">
+          <label class="label">Username</label>
+          <input class="input" type="text" name="username" placeholder="Enter your username" required>
+        </div>
+
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="pass-wrap">
+            <input class="input" id="password" type="password" name="password" placeholder="Enter your password" required>
+            <button class="toggle-pass" type="button" id="togglePass" aria-label="Show/Hide password">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn-login" type="submit">
+          <i class="fa-solid fa-right-to-bracket"></i> Login
+        </button>
+
+        <div class="auth-links">
+          <a href="{% url 'register' %}">Don’t have an account? Register</a>
+          <a href="{% url 'forgot_password' %}">Forgot Password?</a>
+        </div>
+
+        <div class="divider"></div>
+      
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+  // Password show/hide
+  const pass = document.getElementById("password");
+  const btn = document.getElementById("togglePass");
+
+  if(btn && pass){
+    btn.addEventListener("click", () => {
+      const isHidden = pass.type === "password";
+      pass.type = isHidden ? "text" : "password";
+      btn.innerHTML = isHidden
+        ? '<i class="fa-regular fa-eye-slash"></i>'
+        : '<i class="fa-regular fa-eye"></i>';
+    });
+  }
+</script>
+{% endblock script %}

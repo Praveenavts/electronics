@@ -1,0 +1,477 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}Product Details{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+  :root{
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:#e5e7eb;
+    --card:#ffffff;
+    --bg:#f6f8ff;
+    --shadow: 0 18px 70px rgba(2,6,23,.10);
+    --r16:16px;
+    --r22:22px;
+    --r28:28px;
+  }
+
+  .pd-wrap{
+    background:
+      radial-gradient(900px 420px at 10% 0%, rgba(255,215,0,.16), transparent 60%),
+      radial-gradient(900px 420px at 90% 10%, rgba(255,180,0,.12), transparent 60%),
+      var(--bg);
+    padding: 28px 0 50px;
+    min-height: 70vh;
+  }
+
+  .pd-shell{
+    background: var(--card);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r28);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .pd-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  /* LEFT image section */
+  .pd-left{
+    background: linear-gradient(180deg,#ffffff,#f3f6ff);
+    padding: 18px;
+    border-right: 1px solid rgba(0,0,0,.06);
+    position: relative;
+  }
+
+  .pd-imgBox{
+    background:#fff;
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: var(--r22);
+    padding: 14px;
+    display:grid;
+    place-items:center;
+    position: relative;
+  }
+
+  .pd-img{
+    width:100%;
+    height: 420px;
+    object-fit: contain;
+    border-radius: 18px;
+    cursor: crosshair;
+  }
+
+  /* ✅ ZOOM LENS */
+  .zoom-lens{
+    position:absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 18px;
+    border: 2px solid rgba(255,180,0,.85);
+    background: rgba(255,215,0,.18);
+    display:none;
+    pointer-events:none;
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+  }
+
+  /* ✅ RIGHT ZOOM RESULT */
+  .zoom-result{
+    width: 100%;
+    height: 420px;
+    border-radius: var(--r22);
+    border: 1px solid rgba(0,0,0,.08);
+    background: #fff;
+    background-repeat: no-repeat;
+    display:none;
+    box-shadow: 0 14px 40px rgba(2,6,23,.10);
+  }
+
+  .pd-zoomHint{
+    margin-top: 12px;
+    color: var(--muted);
+    font-weight: 900;
+    font-size: 12px;
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    justify-content:center;
+  }
+  .pd-zoomHint i{ color: rgba(255,180,0,.95); }
+
+  /* RIGHT details section */
+  .pd-right{
+    padding: 18px;
+    background:#fff;
+  }
+
+  .pd-title{
+    margin: 0;
+    font-size: 28px;
+    font-weight: 1100;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .pd-subrow{
+    margin-top: 10px;
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items:center;
+  }
+
+  .pd-chip{
+    padding: 7px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.06);
+    background: rgba(10,31,99,.06);
+    color:#0a1f63;
+    font-weight: 1000;
+    font-size: 12px;
+    display:inline-flex;
+    align-items:center;
+    gap: 7px;
+  }
+  .pd-chip.yellow{
+    background: rgba(255,215,0,.25);
+    color:#7a4b00;
+  }
+
+  .pd-priceCard{
+    margin-top: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r22);
+    padding: 14px;
+    background: linear-gradient(180deg,#fff,#fbfbff);
+  }
+
+  .pd-price{
+    display:flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .pd-price del{
+    color:#94a3b8;
+    font-weight: 900;
+    font-size: 14px;
+  }
+  .pd-price .now{
+    font-size: 30px;
+    font-weight: 1200;
+    color: var(--ink);
+  }
+
+  .pd-availability{
+    margin-top: 10px;
+    color: var(--muted);
+    font-weight: 900;
+    font-size: 13px;
+  }
+
+  .pd-sectionTitle{
+    margin: 16px 0 10px;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 15px;
+  }
+
+  .pd-points{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:grid;
+    gap: 10px;
+  }
+  .pd-point{
+    display:flex;
+    gap: 10px;
+    align-items:flex-start;
+    color: var(--muted);
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 1.5;
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r16);
+    padding: 10px 12px;
+    background: rgba(10,31,99,.03);
+  }
+  .pd-point i{
+    margin-top: 3px;
+    color: rgba(255,180,0,.95);
+  }
+
+  .pd-actions{
+    margin-top: 16px;
+    display:flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items:center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(0,0,0,.06);
+    padding-top: 14px;
+  }
+
+  .pd-qty{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    background:#fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 10px;
+    box-shadow: 0 10px 25px rgba(2,6,23,.05);
+  }
+
+  .pd-qbtn{
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.06);
+    background: rgba(255,215,0,.85);
+    color:#111827;
+    font-weight: 1200;
+    cursor:pointer;
+    transition:.15s ease;
+  }
+
+  .pd-qval{
+    width: 56px;
+    text-align:center;
+    font-weight: 1200;
+    border:none;
+    background: transparent;
+    color: var(--ink);
+    outline: none;
+  }
+
+  .pd-btn{
+    border:none;
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-weight: 1200;
+    cursor:pointer;
+    transition:.15s ease;
+    min-width: 240px;
+  }
+  .pd-btn.cart{
+    background: var(--yellow);
+    color:#111827;
+    box-shadow: 0 16px 40px rgba(255,180,0,.18);
+  }
+  .pd-btn.out{
+    background:#ef4444;
+    color:#fff;
+    cursor:not-allowed;
+    opacity:.95;
+  }
+
+  @media (max-width: 992px){
+    .pd-grid{ grid-template-columns: 1fr; }
+    .pd-left{ border-right: none; border-bottom: 1px solid rgba(0,0,0,.06); }
+    .pd-img{ height: 300px; }
+    .zoom-result{ height: 300px; margin-top: 12px; }
+    .pd-btn{ min-width: 100%; }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="pd-wrap">
+  <div class="container">
+    <div class="pd-shell">
+
+      <div class="pd-grid">
+
+        <!-- LEFT -->
+        <div class="pd-left">
+          <div class="pd-imgBox" id="imgBox">
+            <img id="pdMainImg" src="{{ product.image.url }}" class="pd-img" alt="{{ product.name }}">
+            <div id="zoomLens" class="zoom-lens"></div>
+          </div>
+
+          <!-- <div class="pd-zoomHint">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            Hover image to zoom (Right side)
+          </div> -->
+        </div>
+
+        <!-- RIGHT -->
+        <div class="pd-right">
+          <!-- ✅ Zoom Result Box -->
+          <div id="zoomResult" class="zoom-result"></div>
+
+          <h1 class="pd-title mt-3">{{ product.name }}</h1>
+
+          <div class="pd-subrow">
+            {% if product.brand %}
+              <span class="pd-chip"><i class="fa-solid fa-certificate"></i> {{ product.brand }}</span>
+            {% endif %}
+            <span class="pd-chip yellow"><i class="fa-solid fa-truck-fast"></i> Fast Delivery</span>
+            <span class="pd-chip"><i class="fa-solid fa-headset"></i> Support</span>
+          </div>
+
+          <div class="pd-priceCard">
+            <div class="pd-price">
+              {% if product.original_price and product.original_price > product.price %}
+                <del>₹{{ product.original_price }}</del>
+              {% endif %}
+              <span class="now">₹{{ product.price }}</span>
+            </div>
+
+            <div class="pd-availability">
+              Availability:
+              {% if product.in_stock %}
+                <span style="color:#16a34a;">In Stock</span>
+              {% else %}
+                <span style="color:#ef4444;">Out of Stock</span>
+              {% endif %}
+              {% if product.in_stock_qty %} • Stock Qty: {{ product.in_stock_qty }}{% endif %}
+            </div>
+          </div>
+
+          <div class="pd-sectionTitle">Highlights</div>
+          <ul class="pd-points">
+            {% for point in product.description.splitlines %}
+              {% if point %}
+                <li class="pd-point">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <span>{{ point }}</span>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+
+          <div class="pd-actions">
+            <div class="pd-qty">
+              <button class="pd-qbtn" type="button" onclick="decreaseQty('{{ product.id }}')">-</button>
+              <input type="text" id="qty-{{ product.id }}" class="pd-qval" value="1" readonly>
+              <button class="pd-qbtn" type="button" onclick="increaseQty('{{ product.id }}', '{{ product.in_stock_qty }}')">+</button>
+            </div>
+
+            {% if product.in_stock %}
+              <button class="pd-btn cart" type="button"
+                onclick="addToCart('{{ product.id }}', '{{ request.user.is_authenticated }}')">
+                Add to Cart <i class="fa-solid fa-cart-shopping"></i>
+              </button>
+            {% else %}
+              <button class="pd-btn out" type="button" disabled>Out of Stock</button>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+  // ✅ Zoom Logic (Lens + Result)
+  document.addEventListener("DOMContentLoaded", function () {
+    const img = document.getElementById("pdMainImg");
+    const lens = document.getElementById("zoomLens");
+    const result = document.getElementById("zoomResult");
+
+    // ratio
+    const zoom = 2.2;
+
+    function showZoom(){
+      lens.style.display = "block";
+      result.style.display = "block";
+      result.style.backgroundImage = `url('${img.src}')`;
+      result.style.backgroundSize = (img.width * zoom) + "px " + (img.height * zoom) + "px";
+    }
+
+    function hideZoom(){
+      lens.style.display = "none";
+      result.style.display = "none";
+    }
+
+    function moveLens(e){
+      const rect = img.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const lensW = lens.offsetWidth / 2;
+      const lensH = lens.offsetHeight / 2;
+
+      let lx = x - lensW;
+      let ly = y - lensH;
+
+      // bounds
+      if(lx < 0) lx = 0;
+      if(ly < 0) ly = 0;
+      if(lx > img.width - lensW*2) lx = img.width - lensW*2;
+      if(ly > img.height - lensH*2) ly = img.height - lensH*2;
+
+      lens.style.left = lx + "px";
+      lens.style.top  = ly + "px";
+
+      // background position
+      const bgX = -(lx * zoom);
+      const bgY = -(ly * zoom);
+      result.style.backgroundPosition = bgX + "px " + bgY + "px";
+    }
+
+    img.addEventListener("mouseenter", showZoom);
+    img.addEventListener("mouseleave", hideZoom);
+    img.addEventListener("mousemove", moveLens);
+  });
+
+  function increaseQty(productId, maxStock) {
+    const qtyInput = document.getElementById("qty-" + productId);
+    let currentQty = parseInt(qtyInput.value || "1");
+    const max = parseInt(maxStock || "999999");
+    if (currentQty < max) qtyInput.value = currentQty + 1;
+    else alert("Only " + max + " items available in stock!");
+  }
+
+  function decreaseQty(productId) {
+    const qtyInput = document.getElementById("qty-" + productId);
+    let currentQty = parseInt(qtyInput.value || "1");
+    if (currentQty > 1) qtyInput.value = currentQty - 1;
+  }
+
+  function addToCart(productId, isAuthenticated) {
+    if (isAuthenticated === "False") {
+      alert("Please log in to add items to the cart.");
+      window.location.href = "{% url 'login' %}";
+      return;
+    }
+
+    const qty = parseInt(document.getElementById("qty-" + productId).value || "1");
+
+    fetch("{% url 'add_to_cart' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: JSON.stringify({ product_id: productId, quantity: qty })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Product added to cart successfully!");
+        const cartCount = document.getElementById("cart-count");
+        if (cartCount) cartCount.innerText = data.cart_count;
+      } else {
+        alert(data.message || "Failed to add product to cart.");
+      }
+    })
+    .catch(err => console.error("Error:", err));
+  }
+</script>
+{% endblock script %}

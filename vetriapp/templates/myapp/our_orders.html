@@ -1,0 +1,485 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}My Orders{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+  :root{
+    --brand:#0a1f63;
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:#e5e7eb;
+    --bg:#f6f8ff;
+    --card:#ffffff;
+    --shadow: 0 18px 70px rgba(2,6,23,.10);
+    --r14:14px;
+    --r18:18px;
+    --r24:24px;
+  }
+
+  .mo-wrap{
+    background:
+      radial-gradient(900px 420px at 10% 0%, rgba(255,215,0,.16), transparent 60%),
+      radial-gradient(900px 420px at 90% 10%, rgba(255,180,0,.12), transparent 60%),
+      var(--bg);
+    padding: 26px 0 60px;
+    min-height: 75vh;
+  }
+
+  .mo-top{
+    background: var(--card);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r24);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  .mo-title{
+    margin:0;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 22px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .mo-title i{ color: var(--yellow2); }
+
+  .mo-sub{
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-weight: 900;
+    font-size: 13px;
+  }
+
+  .mo-badges{
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .mo-pill{
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 1100;
+    border: 1px solid rgba(0,0,0,.06);
+    background: rgba(255,255,255,.9);
+    color: var(--ink);
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+  }
+  .mo-pill.yellow{ background: rgba(255,215,0,.35); color:#7a4b00; }
+  .mo-pill.sec{ background: rgba(10,31,99,.06); color: var(--brand); }
+
+  /* success message */
+  .mo-success{
+    background: linear-gradient(180deg,#fff,#f7f9ff);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r24);
+    box-shadow: 0 14px 45px rgba(2,6,23,.08);
+    padding: 16px;
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .mo-check{
+    width: 52px;
+    height: 52px;
+    border-radius: 18px;
+    display:grid;
+    place-items:center;
+    background: rgba(255,215,0,.85);
+    border: 1px solid rgba(0,0,0,.06);
+    color:#111827;
+    font-size: 22px;
+    flex: 0 0 auto;
+  }
+  .mo-success h3{
+    margin:0;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 16px;
+  }
+  .mo-success p{
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  /* cards */
+  .mo-card{
+    background: var(--card);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r24);
+    box-shadow: 0 16px 55px rgba(2,6,23,.08);
+    overflow:hidden;
+    margin-bottom: 16px;
+  }
+
+  .mo-cardHead{
+    padding: 14px 16px;
+    background: linear-gradient(180deg,#fff,#f7f9ff);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    display:flex;
+    align-items:flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .mo-orderId{
+    font-weight: 1100;
+    color: var(--ink);
+    margin:0;
+    font-size: 14px;
+  }
+  .mo-orderId span{
+    color: var(--brand);
+  }
+
+  .mo-status{
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 1100;
+    border: 1px solid rgba(0,0,0,.06);
+    background: rgba(255,215,0,.35);
+    color:#7a4b00;
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+  }
+
+  .mo-meta{
+    display:flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    color: var(--muted);
+    font-weight: 900;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+  .mo-meta i{ color: var(--yellow2); margin-right: 6px; }
+
+  /* body grid */
+  .mo-body{
+    padding: 14px 16px 16px;
+    display:grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 14px;
+  }
+
+  /* items list */
+  .mo-items{
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r18);
+    padding: 12px;
+    background: rgba(10,31,99,.02);
+  }
+
+  .mo-itemsTitle{
+    margin:0 0 10px;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 14px;
+    display:flex;
+    align-items:center;
+    gap: 8px;
+  }
+  .mo-itemsTitle i{ color: var(--yellow2); }
+
+  .mo-item{
+    display:flex;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 16px;
+    background:#fff;
+    border: 1px solid rgba(0,0,0,.06);
+    margin-bottom: 10px;
+    align-items:center;
+  }
+  .mo-item:last-child{ margin-bottom: 0; }
+
+  .mo-thumb{
+    width: 62px;
+    height: 62px;
+    border-radius: 16px;
+    border: 1px solid rgba(0,0,0,.08);
+    background: #fff;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    flex: 0 0 auto;
+  }
+  .mo-thumb img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+  }
+  .mo-thumb .noimg{
+    font-size: 12px;
+    font-weight: 1000;
+    color: var(--muted);
+  }
+
+  .mo-itemInfo{ flex: 1 1 auto; min-width: 0; }
+  .mo-itemName{
+    margin:0;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+  }
+  .mo-itemSub{
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-weight: 900;
+    font-size: 12px;
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .mo-itemPrice{
+    font-weight: 1200;
+    color: var(--ink);
+  }
+
+  /* right side address/payment */
+  .mo-side{
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r18);
+    padding: 12px;
+    background:#fff;
+  }
+  .mo-sideBlock{
+    padding: 10px;
+    border-radius: 16px;
+    background: rgba(255,215,0,.14);
+    border: 1px solid rgba(0,0,0,.06);
+    margin-bottom: 10px;
+  }
+  .mo-sideBlock:last-child{ margin-bottom: 0; }
+
+  .mo-sideTitle{
+    margin:0 0 6px;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 13px;
+    display:flex;
+    align-items:center;
+    gap: 8px;
+  }
+  .mo-sideTitle i{ color: var(--yellow2); }
+
+  .mo-sideText{
+    margin:0;
+    color: #1f2937;
+    font-weight: 800;
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+
+  /* footer actions */
+  .mo-actions{
+    padding: 12px 16px 16px;
+    border-top: 1px solid rgba(0,0,0,.06);
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .mo-track{
+    background: var(--yellow);
+    border: 1px solid rgba(0,0,0,.06);
+    color:#111827;
+    font-weight: 1200;
+    padding: 10px 14px;
+    border-radius: 14px;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    transition:.15s ease;
+    box-shadow: 0 16px 40px rgba(255,180,0,.18);
+  }
+  .mo-track:hover{ transform: translateY(-1px); filter: brightness(.98); }
+
+  .mo-smallNote{
+    color: var(--muted);
+    font-weight: 900;
+    font-size: 12px;
+    display:flex;
+    align-items:center;
+    gap: 8px;
+  }
+  .mo-smallNote i{ color: var(--brand); }
+
+  /* empty */
+  .mo-empty{
+    background:#fff;
+    border: 1px dashed rgba(0,0,0,.20);
+    border-radius: var(--r24);
+    padding: 20px;
+    text-align:center;
+    color: var(--muted);
+    font-weight: 1000;
+  }
+
+  @media (max-width: 992px){
+    .mo-body{ grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 426px){
+    .mo-top{ padding: 14px; }
+    .mo-title{ font-size: 18px; }
+    .mo-cardHead{ padding: 12px 14px; }
+    .mo-body{ padding: 12px 14px 14px; }
+    .mo-actions{ padding: 12px 14px 14px; }
+    .mo-track{ width: 100%; justify-content:center; }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="mo-wrap">
+  <div class="container">
+
+    <!-- TOP BAR -->
+    <div class="mo-top">
+      <div>
+        <h1 class="mo-title"><i class="fa-solid fa-box"></i> My Orders</h1>
+        <p class="mo-sub">Track your recent purchases & delivery status</p>
+      </div>
+
+      <div class="mo-badges">
+        <span class="mo-pill yellow"><i class="fa-solid fa-truck-fast"></i> Fast Delivery</span>
+        <span class="mo-pill sec"><i class="fa-solid fa-shield-halved"></i> Secure</span>
+      </div>
+    </div>
+
+    <!-- SUCCESS MESSAGE (optional look) -->
+    <div class="mo-success">
+      <div class="mo-check"><i class="fa-solid fa-check"></i></div>
+      <div>
+        <h3>Order placed successfully!</h3>
+        <p>Confirmation will be sent to your mail.</p>
+      </div>
+    </div>
+
+    {% if orders %}
+      {% for order in orders %}
+      <div class="mo-card">
+
+        <!-- HEAD -->
+        <div class="mo-cardHead">
+          <div>
+            <p class="mo-orderId">Order ID: <span>#{{ order.id }}</span></p>
+            <div class="mo-meta">
+              <span><i class="fa-regular fa-calendar"></i> {{ order.created_at|date:"d F Y" }}</span>
+              <span><i class="fa-solid fa-location-dot"></i> {{ order.billing_address.city }}, {{ order.billing_address.state }}</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="mo-status">
+              <i class="fa-solid fa-circle-info"></i> {{ order.status }}
+            </div>
+            <div class="mo-meta" style="margin-top:8px;">
+              <span><i class="fa-solid fa-truck"></i> Expected: <b>{{ order.estimated_delivery_date|date:"l, d M" }}</b></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BODY -->
+        <div class="mo-body">
+
+          <!-- ITEMS -->
+          <div class="mo-items">
+            <p class="mo-itemsTitle"><i class="fa-solid fa-bag-shopping"></i> Products</p>
+
+            {% for item in order.items.all %}
+            <div class="mo-item">
+              <div class="mo-thumb">
+                {% if item.product.image %}
+                  <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                {% else %}
+                  <div class="noimg">No Image</div>
+                {% endif %}
+              </div>
+
+              <div class="mo-itemInfo">
+                <p class="mo-itemName">{{ item.product.name }}</p>
+                <div class="mo-itemSub">
+                  <span>Qty: <b>{{ item.quantity }}</b></span>
+                  <span class="mo-itemPrice">₹{{ item.price }}</span>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- SIDE INFO -->
+          <div class="mo-side">
+
+            <div class="mo-sideBlock">
+              <p class="mo-sideTitle"><i class="fa-solid fa-house"></i> Shipping Address</p>
+              <p class="mo-sideText">
+                {{ order.billing_address.first_name }} {{ order.billing_address.last_name }}<br>
+                {{ order.billing_address.address }}, {{ order.billing_address.city }}, {{ order.billing_address.state }} - {{ order.billing_address.pincode }}<br>
+                {{ order.billing_address.country }}
+              </p>
+            </div>
+
+            <div class="mo-sideBlock" style="background: rgba(10,31,99,.05);">
+              <p class="mo-sideTitle"><i class="fa-solid fa-credit-card"></i> Payment Method</p>
+              <p class="mo-sideText">Pay on Delivery</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="mo-actions">
+          <div class="mo-smallNote">
+            <i class="fa-solid fa-circle-check"></i>
+            Your order is being processed.
+          </div>
+
+          <a class="mo-track" href="{% url 'track_order' order.id %}">
+            Track Order <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="mo-empty">
+        <i class="fa-solid fa-box-open" style="font-size:28px;color:rgba(10,31,99,.35);"></i>
+        <div style="margin-top:10px;">No orders found.</div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}{% endblock script %}

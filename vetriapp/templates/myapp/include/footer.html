@@ -1,0 +1,276 @@
+<!-- Footer -->
+<footer class="ve-footer mt-5">
+  <div class="container py-5">
+    <div class="row g-4">
+
+      <!-- Brand / About -->
+      <div class="col-12 col-md-4">
+        <a href="/" class="ve-foot-brand text-decoration-none d-inline-flex align-items-center gap-2">
+          <span class="ve-foot-logo"><i class="fa-solid fa-bolt"></i></span>
+          <span class="ve-foot-name">Vetri <span>Electronics</span></span>
+        </a>
+
+        <p class="ve-foot-text mt-3 mb-3">
+          Best electronics store for mobiles, laptops, accessories & smart gadgets.
+          Quality products, great deals, and quick support — all in one place.
+        </p>
+
+        <!-- Social -->
+        <div class="ve-social d-flex gap-2">
+          <a href="#" class="ve-social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="ve-social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="ve-social-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" class="ve-social-btn" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-6 col-md-2">
+        <h6 class="ve-foot-title">Quick Links</h6>
+        <ul class="ve-foot-links list-unstyled m-0">
+          <li><a href="/" class="ve-foot-link">Home</a></li>
+          <li><a href="{% url 'ourorders' %}" class="ve-foot-link">My Orders</a></li>
+          <li><a href="{% url 'cartpage' %}" class="ve-foot-link">Cart</a></li>
+          <li><a href="{% url 'contactus' %}" class="ve-foot-link">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Policies -->
+      <div class="col-6 col-md-2">
+        <h6 class="ve-foot-title">Policies</h6>
+        <ul class="ve-foot-links list-unstyled m-0">
+          <li><a href="{% url 'privacypolicy' %}" class="ve-foot-link">Privacy Policy</a></li>
+          <li><a href="{% url 'termscondition' %}" class="ve-foot-link">Terms & Conditions</a></li>
+          <li><a href="{% url 'contactus' %}" class="ve-foot-link">Support</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact + Newsletter -->
+      <div class="col-12 col-md-4">
+        <h6 class="ve-foot-title">Contact</h6>
+
+        <div class="ve-contact">
+          <div class="ve-contact-row">
+            <span class="ve-ico"><i class="fa-solid fa-location-dot"></i></span>
+            <span>Surandai • Tamil Nadu</span>
+          </div>
+          <div class="ve-contact-row">
+            <span class="ve-ico"><i class="fa-solid fa-phone"></i></span>
+            <span>+91 8778481708</span>
+          </div>
+          <div class="ve-contact-row">
+            <span class="ve-ico"><i class="fa-solid fa-envelope"></i></span>
+            <span>vetrielectronics@gmail.com</span>
+          </div>
+        </div>
+
+        <div class="ve-news mt-3">
+          <!-- <div class="ve-news-title">Get Offers & Updates</div>
+          <div class="ve-news-box">
+            <input type="email" class="ve-news-input" placeholder="Enter your email">
+            <button class="ve-news-btn" type="button">Subscribe</button>
+          </div>
+          <small class="ve-news-note">No spam. Only best deals.</small>
+        </div> -->
+      </div>
+
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="ve-foot-bottom mt-4 pt-3 d-flex flex-wrap gap-2 align-items-center justify-content-between">
+      <div class="ve-copy">
+        &copy; 2026 Vetri Electronics. All Rights Reserved.
+      </div>
+      <div class="ve-pay d-flex gap-2 align-items-center">
+        <span class="ve-pay-pill"><i class="fa-solid fa-shield-halved"></i> Secure Checkout</span>
+        <span class="ve-pay-pill"><i class="fa-solid fa-truck-fast"></i> Fast Delivery</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  :root{
+    --brand:#0a1f63;
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --ink:#0f172a;
+    --muted:#94a3b8;
+    --line:rgba(255,255,255,.14);
+    --card:rgba(255,255,255,.06);
+    --shadow: 0 18px 70px rgba(2,6,23,.30);
+    --r16:16px;
+    --r22:22px;
+    --r28:28px;
+  }
+
+  .ve-footer{
+    background:
+      radial-gradient(900px 420px at 10% 0%, rgba(255,215,0,.18), transparent 60%),
+      radial-gradient(900px 420px at 90% 10%, rgba(255,180,0,.12), transparent 60%),
+      linear-gradient(180deg, #0b1224, #050814);
+    color:#fff;
+    border-top: 2px solid rgba(255,215,0,.25);
+  }
+
+  .ve-foot-brand{
+    color:#fff;
+  }
+  .ve-foot-logo{
+    width:40px;height:40px;border-radius:14px;
+    display:grid;place-items:center;
+    background: rgba(255,215,0,.18);
+    border: 1px solid rgba(255,215,0,.25);
+    color: var(--yellow);
+  }
+  .ve-foot-name{
+    font-weight: 1100;
+    font-size: 18px;
+    letter-spacing:.2px;
+  }
+  .ve-foot-name span{ color: var(--yellow); }
+
+  .ve-foot-text{
+    color: rgba(255,255,255,.75);
+    font-weight: 700;
+    line-height:1.6;
+    max-width: 340px;
+  }
+
+  .ve-foot-title{
+    font-weight: 1100;
+    margin: 0 0 12px;
+    color:#fff;
+    position: relative;
+  }
+  .ve-foot-title::after{
+    content:"";
+    display:block;
+    width: 40px;
+    height: 3px;
+    background: var(--yellow);
+    border-radius: 999px;
+    margin-top: 8px;
+    opacity:.9;
+  }
+
+  .ve-foot-links li{ margin: 9px 0; }
+  .ve-foot-link{
+    color: rgba(255,255,255,.78);
+    text-decoration:none;
+    font-weight: 800;
+    transition: .15s ease;
+  }
+  .ve-foot-link:hover{
+    color: var(--yellow);
+    transform: translateX(2px);
+  }
+
+  .ve-social-btn{
+    width: 40px; height: 40px;
+    border-radius: 14px;
+    display:grid; place-items:center;
+    background: var(--card);
+    border: 1px solid var(--line);
+    color:#fff;
+    text-decoration:none;
+    transition: .15s ease;
+  }
+  .ve-social-btn:hover{
+    background: rgba(255,215,0,.16);
+    border-color: rgba(255,215,0,.30);
+    color: var(--yellow);
+    transform: translateY(-2px);
+  }
+
+  .ve-contact{
+    display:grid;
+    gap: 10px;
+  }
+  .ve-contact-row{
+    display:flex;
+    gap: 10px;
+    align-items:center;
+    color: rgba(255,255,255,.78);
+    font-weight: 800;
+  }
+  .ve-contact-row .ve-ico{
+    width: 34px; height: 34px;
+    border-radius: 12px;
+    display:grid; place-items:center;
+    background: rgba(255,215,0,.12);
+    border: 1px solid rgba(255,215,0,.20);
+    color: var(--yellow);
+    flex: 0 0 auto;
+  }
+
+  .ve-news-title{
+    font-weight: 1100;
+    margin-bottom: 10px;
+  }
+  .ve-news-box{
+    display:flex;
+    gap: 10px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--r22);
+    padding: 8px;
+  }
+  .ve-news-input{
+    flex:1;
+    border:none;
+    outline:none;
+    background: transparent;
+    color:#fff;
+    padding: 10px 12px;
+    font-weight: 800;
+  }
+  .ve-news-input::placeholder{ color: rgba(255,255,255,.55); }
+
+  .ve-news-btn{
+    border:none;
+    outline:none;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: var(--yellow);
+    color:#111827;
+    font-weight: 1100;
+    cursor:pointer;
+    transition: .15s ease;
+    white-space: nowrap;
+  }
+  .ve-news-btn:hover{ filter: brightness(.98); transform: translateY(-1px); }
+
+  .ve-news-note{
+    display:block;
+    margin-top: 8px;
+    color: rgba(255,255,255,.62);
+    font-weight: 700;
+  }
+
+  .ve-foot-bottom{
+    border-top: 1px solid rgba(255,255,255,.10);
+  }
+  .ve-copy{
+    color: rgba(255,255,255,.72);
+    font-weight: 800;
+  }
+  .ve-pay-pill{
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 999px;
+    padding: 7px 10px;
+    color: rgba(255,255,255,.78);
+    font-weight: 900;
+    font-size: 12px;
+    display:inline-flex;
+    gap: 8px;
+    align-items:center;
+  }
+  .ve-pay-pill i{ color: var(--yellow); }
+
+  @media(max-width: 576px){
+    .ve-news-box{ flex-direction: column; }
+    .ve-news-btn{ width: 100%; }
+  }
+</style>

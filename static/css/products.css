@@ -1,0 +1,33 @@
+.cartbtn{
+margin-left: 60px;
+}
+.card img{
+    width: 150px;
+    height: 150px;
+    margin: auto;
+}
+.card{
+    height: 400px;
+}
+.quantity-btn{
+    width: 30px;
+}
+.qty-input{
+    width: 50px;
+}
+.sidebar h5{
+    background-color:  #FFD700;
+    border-radius:0px 20px 0px 20px;
+    padding: 5px;
+    text-align: center;
+}
+.sidebar{
+    padding: 10px;
+    border-radius: 10px;
+}
+.sidebar li{
+   margin-left: 50px;  
+}
+.ligroup{
+    margin-left: 70px;
+}

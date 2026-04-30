@@ -1,0 +1,38 @@
+.container-1{
+    width: 100%;   
+}
+.container-2{
+    width: 100%;
+}
+.carousel-item{
+    width: 100%;
+}
+.carousel-item img {
+    width: 100%; 
+    object-fit: cover; 
+}
+#carouselExample{
+    margin-top: -15px;
+}
+
+.category-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+}
+.category-card {
+    text-align: center;
+    width: 150px;
+}
+.category-card img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.category-card h5 {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #4a4a4a;
+}

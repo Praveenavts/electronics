@@ -1,0 +1,380 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}Search Results{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<style>
+  :root{
+    --brand:#0a1f63;
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:#e5e7eb;
+    --bg:#f6f8ff;
+    --card:#ffffff;
+    --shadow: 0 18px 70px rgba(2,6,23,.10);
+    --r16:16px;
+    --r22:22px;
+    --r28:28px;
+  }
+
+  .sr-wrap{
+    background:
+      radial-gradient(900px 420px at 10% 0%, rgba(255,215,0,.16), transparent 60%),
+      radial-gradient(900px 420px at 90% 10%, rgba(255,180,0,.12), transparent 60%),
+      var(--bg);
+    padding: 22px 0 60px;
+    min-height: 75vh;
+  }
+
+  .sr-top{
+    background: var(--card);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r28);
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .sr-title{
+    margin:0;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 18px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .sr-title i{ color: var(--yellow2); }
+
+  .sr-pill{
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.06);
+    background: rgba(255,215,0,.25);
+    color:#7a4b00;
+    font-weight: 1100;
+    font-size: 12px;
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+  }
+
+  .sr-grid{
+    margin-top: 14px;
+  }
+
+  /* Product Card */
+  .sr-card{
+    background: var(--card);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r22);
+    box-shadow: 0 12px 40px rgba(2,6,23,.06);
+    overflow:hidden;
+    height: 100%;
+    transition: .18s ease;
+  }
+  .sr-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 22px 70px rgba(10,31,99,.12);
+    border-color: rgba(10,31,99,.14);
+  }
+
+  .sr-media{
+    background: linear-gradient(180deg,#fff,#f3f6ff);
+    padding: 14px;
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    display:grid;
+    place-items:center;
+  }
+  .sr-media a{ display:block; width:100%; }
+  .sr-media img{
+    width: 100%;
+    height: 170px;
+    object-fit: contain;
+    transition: transform .18s ease;
+  }
+  .sr-card:hover .sr-media img{ transform: scale(1.03); }
+
+  .sr-body{
+    padding: 12px 12px 14px;
+  }
+
+  .sr-name{
+    margin: 0;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.35;
+    height: 38px;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .sr-name a{
+    text-decoration:none;
+    color: var(--ink);
+  }
+  .sr-name a:hover{ text-decoration: underline; }
+
+  .sr-price{
+    margin-top: 8px;
+    display:flex;
+    gap: 10px;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+  .sr-price del{
+    color:#94a3b8;
+    font-weight: 900;
+    font-size: 12px;
+  }
+  .sr-price .now{
+    font-weight: 1200;
+    font-size: 16px;
+    color:#111827;
+  }
+
+  .sr-stock{
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 1000;
+    color: var(--muted);
+    display:flex;
+    align-items:center;
+    gap: 8px;
+  }
+  .sr-stock .dot{
+    width: 8px; height: 8px;
+    border-radius: 999px;
+    background: #16a34a;
+  }
+  .sr-stock.out .dot{ background:#ef4444; }
+  .sr-stock.out{ color:#ef4444; }
+
+  /* Qty + Buttons */
+  .sr-actions{
+    margin-top: 12px;
+    display:grid;
+    gap: 10px;
+  }
+
+  .sr-qty{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 10px;
+    background:#fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 10px;
+    box-shadow: 0 10px 25px rgba(2,6,23,.05);
+  }
+  .sr-qbtn{
+    width: 38px; height: 38px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.06);
+    background: rgba(255,215,0,.90);
+    font-weight: 1200;
+    cursor:pointer;
+  }
+  .sr-qbtn:hover{ filter: brightness(.98); transform: translateY(-1px); }
+  .sr-qval{
+    width: 52px;
+    text-align:center;
+    border:none;
+    background: transparent;
+    outline:none;
+    font-weight: 1200;
+    color: var(--ink);
+  }
+
+  .sr-btn{
+    border:none;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-weight: 1200;
+    cursor:pointer;
+    transition:.15s ease;
+    width: 100%;
+  }
+  .sr-btn.cart{
+    background: var(--yellow);
+    color:#111827;
+    box-shadow: 0 16px 40px rgba(255,180,0,.18);
+  }
+  .sr-btn.cart:hover{ filter: brightness(.98); transform: translateY(-1px); }
+  .sr-btn.out{
+    background:#ef4444;
+    color:#fff;
+    cursor:not-allowed;
+    opacity:.95;
+  }
+
+  /* Empty state */
+  .sr-empty{
+    background:#fff;
+    border: 1px dashed rgba(0,0,0,.16);
+    border-radius: var(--r28);
+    padding: 28px;
+    text-align:center;
+    color: var(--muted);
+    font-weight: 950;
+  }
+
+  @media (max-width: 576px){
+    .sr-media img{ height: 150px; }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="sr-wrap">
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="sr-top">
+      <h2 class="sr-title"><i class="fa-solid fa-magnifying-glass"></i> Search Results</h2>
+      <span class="sr-pill"><i class="fa-solid fa-bag-shopping"></i> {{ products|length }} Products</span>
+    </div>
+
+    <!-- GRID -->
+    <div class="sr-grid">
+      <div class="row g-4">
+        {% for product in products %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+
+          <div class="sr-card h-100">
+
+            <!-- Image click -> product details -->
+            <div class="sr-media">
+              <a href="{% url 'product_details' product.id %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+              </a>
+            </div>
+
+            <div class="sr-body">
+
+              <!-- Name click -> product details -->
+              <p class="sr-name">
+                <a href="{% url 'product_details' product.id %}">{{ product.name }}</a>
+              </p>
+
+              <div class="sr-price">
+                {% if product.original_price and product.original_price > product.price %}
+                  <del>₹{{ product.original_price }}</del>
+                {% endif %}
+                <span class="now">₹{{ product.price }}</span>
+              </div>
+
+              {% if product.in_stock %}
+                <div class="sr-stock"><span class="dot"></span> In Stock {% if product.in_stock_qty %} • Qty: {{ product.in_stock_qty }}{% endif %}</div>
+              {% else %}
+                <div class="sr-stock out"><span class="dot"></span> Out of Stock</div>
+              {% endif %}
+
+              <div class="sr-actions">
+
+                <!-- Qty -->
+                <div class="sr-qty">
+                  <button class="sr-qbtn" type="button" onclick="decreaseQty('{{ product.id }}')">-</button>
+                  <input type="text" id="qty-{{ product.id }}" class="sr-qval" value="1" readonly>
+                  <button class="sr-qbtn" type="button" onclick="increaseQty('{{ product.id }}','{{ product.in_stock_qty }}')">+</button>
+                </div>
+
+                <!-- Add to cart -->
+                {% if product.in_stock %}
+                  <button class="sr-btn cart" type="button"
+                    onclick="addToCart('{{ product.id }}','{{ request.user.is_authenticated }}')">
+                    Add to Cart <i class="fa-solid fa-cart-shopping"></i>
+                  </button>
+                {% else %}
+                  <button class="sr-btn out" type="button" disabled>
+                    Out of Stock
+                  </button>
+                {% endif %}
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        {% empty %}
+        <div class="col-12">
+          <div class="sr-empty">
+            No products found. Try another keyword.
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+  function increaseQty(productId, maxStock) {
+    const qtyInput = document.getElementById("qty-" + productId);
+    let currentQty = parseInt(qtyInput.value || "1");
+    const max = parseInt(maxStock || "999999");
+    if (currentQty < max) qtyInput.value = currentQty + 1;
+    else alert("Only " + max + " items available in stock!");
+  }
+
+  function decreaseQty(productId) {
+    const qtyInput = document.getElementById("qty-" + productId);
+    let currentQty = parseInt(qtyInput.value || "1");
+    if (currentQty > 1) qtyInput.value = currentQty - 1;
+  }
+
+  function addToCart(productId, isAuthenticated) {
+    if (isAuthenticated === "False") {
+      alert("Please log in to add items to the cart.");
+      window.location.href = "{% url 'login' %}";
+      return;
+    }
+
+    const qty = parseInt(document.getElementById("qty-" + productId).value || "1");
+
+    fetch("{% url 'add_to_cart' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: JSON.stringify({ product_id: productId, quantity: qty })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Product added to cart successfully!");
+
+        const cartCountEl = document.getElementById("cart-count");
+        if (cartCountEl) {
+          // If backend returns total count (recommended)
+          if (data.cart_count !== undefined && data.cart_count !== null) {
+            cartCountEl.innerText = data.cart_count;
+          } else {
+            // fallback: add qty
+            const current = parseInt(cartCountEl.innerText || "0");
+            cartCountEl.innerText = current + qty;
+          }
+        }
+      } else {
+        alert(data.message || "Failed to add product to cart.");
+      }
+    })
+    .catch(err => console.error("Error:", err));
+  }
+</script>
+{% endblock script %}

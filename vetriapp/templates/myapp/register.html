@@ -1,0 +1,432 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}Register{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+  :root{
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:#e5e7eb;
+    --card:#ffffff;
+    --bg:#f6f8ff;
+    --shadow: 0 16px 60px rgba(2,6,23,.12);
+    --r14:14px;
+    --r18:18px;
+    --r24:24px;
+    --ok:#16a34a;
+    --bad:#b42318;
+  }
+
+  .auth-wrap{
+    min-height: calc(100vh - 90px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 28px 14px;
+    background:
+      radial-gradient(900px 400px at 15% 15%, rgba(255,215,0,.22), transparent 60%),
+      radial-gradient(900px 400px at 85% 20%, rgba(255,180,0,.18), transparent 60%),
+      var(--bg);
+  }
+
+  .auth-card{
+    width: min(1020px, 100%);
+    background: var(--card);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r24);
+    overflow:hidden;
+    box-shadow: var(--shadow);
+    display:grid;
+    grid-template-columns: 1fr 1.1fr; /* Different from login */
+  }
+
+  /* Right banner (different from login) */
+  .auth-right{
+    padding: 28px;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.0), rgba(255,255,255,.0)),
+      linear-gradient(135deg, rgba(255,215,0,.95), rgba(255,180,0,.88));
+    position: relative;
+    color:#111827;
+  }
+  .auth-right::after{
+    content:"";
+    position:absolute;
+    left:-80px; bottom:-80px;
+    width: 260px; height: 260px;
+    background: rgba(255,255,255,.35);
+    border-radius: 70px;
+    transform: rotate(-12deg);
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight: 1000;
+    font-size: 20px;
+    position: relative;
+    z-index: 2;
+  }
+  .brand i{
+    width: 46px; height: 46px;
+    border-radius: 16px;
+    display:grid;
+    place-items:center;
+    background: rgba(255,255,255,.55);
+    border: 1px solid rgba(0,0,0,.08);
+  }
+  .auth-right h2{
+    margin: 18px 0 10px;
+    font-weight: 1000;
+    position: relative;
+    z-index: 2;
+  }
+  .auth-right p{
+    margin: 0;
+    color: rgba(17,24,39,.85);
+    line-height: 1.6;
+    position: relative;
+    z-index: 2;
+  }
+
+  .steps{
+    margin-top: 16px;
+    display:grid;
+    gap:10px;
+    position: relative;
+    z-index: 2;
+  }
+  .step{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background: rgba(255,255,255,.55);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r18);
+    padding: 10px 12px;
+  }
+  .step b{ display:block; font-weight: 1000; }
+  .step small{ color: rgba(17,24,39,.75); }
+
+  /* Left form */
+  .auth-left{
+    padding: 30px 26px;
+    background:#fff;
+  }
+  .auth-title{
+    font-weight: 1000;
+    color: var(--ink);
+    margin: 0 0 6px;
+    font-size: 26px;
+  }
+  .auth-sub{
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .auth-alert{
+    background: #fff1f1;
+    border: 1px solid #ffd0d0;
+    color: var(--bad);
+    border-radius: var(--r14);
+    padding: 10px 12px;
+    font-weight: 800;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  .field{ margin-bottom: 12px; }
+  .label{
+    display:block;
+    font-weight: 900;
+    font-size: 13px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .input{
+    width: 100%;
+    padding: 12px 12px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    outline:none;
+    font-size: 15px;
+    background:#fff;
+    transition: .15s ease;
+  }
+  .input:focus{
+    border-color: rgba(255,180,0,.85);
+    box-shadow: 0 14px 40px rgba(255,180,0,.18);
+  }
+
+  /* helper text */
+  .help{
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .help.bad{ color: var(--bad); font-weight: 800; }
+  .help.ok{ color: var(--ok); font-weight: 800; }
+
+  /* Password with icon */
+  .pass-wrap{ position: relative; }
+  .toggle-pass{
+    position:absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border:none;
+    background: transparent;
+    color: #64748b;
+    cursor:pointer;
+    padding: 6px 8px;
+    border-radius: 10px;
+  }
+  .toggle-pass:hover{ background:#f3f4f6; }
+
+  /* Button */
+  .btn-register{
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 12px 14px;
+    background: var(--yellow);
+    color:#111827;
+    font-weight: 1000;
+    font-size: 15px;
+    cursor:pointer;
+    box-shadow: 0 16px 40px rgba(255,180,0,.22);
+    transition: .15s ease;
+    margin-top: 6px;
+  }
+  .btn-register:hover{
+    transform: translateY(-1px);
+    filter: brightness(.98);
+  }
+
+  .auth-links{
+    margin-top: 14px;
+    display:flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 14px;
+  }
+  .auth-links a{
+    text-decoration: none;
+    font-weight: 900;
+    color: #111827;
+  }
+  .auth-links a:hover{ text-decoration: underline; }
+
+  .divider{
+    margin: 16px 0 10px;
+    border-top: 1px dashed #e5e7eb;
+  }
+
+  @media (max-width: 900px){
+    .auth-card{ grid-template-columns: 1fr; }
+    .auth-left{ padding: 22px; }
+    .auth-right{ padding: 22px; }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+
+    <!-- LEFT (FORM) -->
+    <div class="auth-left">
+      <h1 class="auth-title">Create Account</h1>
+   
+
+      {% if error %}
+        <div class="auth-alert">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          {{ error }}
+        </div>
+      {% endif %}
+
+      <form method="post" onsubmit="return validateForm()" novalidate>
+        {% csrf_token %}
+
+        <div class="field">
+          <label class="label">Username</label>
+          <input class="input" type="text" name="username" placeholder="Choose a username" required>
+         
+        </div>
+
+        <div class="field">
+          <label class="label">Email</label>
+          <input class="input" type="email" id="email" name="email" placeholder="Enter your email" required oninput="validateEmail(this)">
+          <div id="email-error" class="help bad" style="display:none;"></div>
+        </div>
+
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="pass-wrap">
+            <input class="input" type="password" id="password" name="password" placeholder="Create a password" required oninput="checkStrength()">
+            <button class="toggle-pass" type="button" id="togglePassword" aria-label="Show/Hide password">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <div id="pass-strength" class="help">Use 8+ chars, number & symbol for strong password.</div>
+        </div>
+
+        <div class="field">
+          <label class="label">Confirm Password</label>
+          <div class="pass-wrap">
+            <input class="input" type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter password" required oninput="matchPassword()">
+            <button class="toggle-pass" type="button" id="toggleConfirmPassword" aria-label="Show/Hide confirm password">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <div id="match-msg" class="help"></div>
+        </div>
+
+        <button class="btn-register" type="submit">
+          <i class="fa-solid fa-user-plus"></i> Register
+        </button>
+
+        <div class="auth-links">
+          <a href="{% url 'login' %}">Already have an account? Login</a>
+        </div>
+
+        <div class="divider"></div>
+        <p class="help">By registering, you agree to basic account usage policy.</p>
+      </form>
+    </div>
+
+    <!-- RIGHT (BANNER) -->
+    <div class="auth-right">
+      <div class="brand">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>Vetri Electronics</span>
+      </div>
+
+      <h2>Start Shopping Today ✨</h2>
+    
+
+      <div class="steps">
+        <div class="step">
+          <i class="fa-solid fa-list"></i>
+          <div>
+            <b>Browse Categories</b>
+            <small>Mobiles, laptops, accessories, CCTV & more</small>
+          </div>
+        </div>
+        <div class="step">
+          <i class="fa-solid fa-cart-plus"></i>
+          <div>
+            <b>Add to Cart</b>
+            <small>Quick add & manage quantity easily</small>
+          </div>
+        </div>
+        <div class="step">
+          <i class="fa-solid fa-truck-fast"></i>
+          <div>
+            <b>Track Orders</b>
+            <small>Order status & history in My Orders</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+  // Show/Hide Password
+  function toggleEye(btnId, inputId){
+    const btn = document.getElementById(btnId);
+    const input = document.getElementById(inputId);
+    if(!btn || !input) return;
+
+    btn.addEventListener("click", () => {
+      const isHidden = input.type === "password";
+      input.type = isHidden ? "text" : "password";
+      btn.innerHTML = isHidden
+        ? '<i class="fa-regular fa-eye-slash"></i>'
+        : '<i class="fa-regular fa-eye"></i>';
+    });
+  }
+  toggleEye("togglePassword", "password");
+  toggleEye("toggleConfirmPassword", "confirm_password");
+
+  // Email validation
+  function validateEmail(input) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|net|edu|in|co|gov|info|biz)$/;
+    const emailError = document.getElementById("email-error");
+
+    if (!emailRegex.test(input.value)) {
+      emailError.innerText = "Invalid email! Example: test@example.com";
+      emailError.style.display = "block";
+    } else {
+      emailError.style.display = "none";
+    }
+  }
+
+  function validateForm() {
+    const emailError = document.getElementById("email-error");
+    const matchMsg = document.getElementById("match-msg");
+    if (emailError.style.display === "block") return false;
+    if (matchMsg.classList.contains("bad")) return false;
+    return true;
+  }
+
+  // Password strength (simple)
+  function checkStrength(){
+    const p = document.getElementById("password").value || "";
+    const el = document.getElementById("pass-strength");
+    let score = 0;
+
+    if(p.length >= 8) score++;
+    if(/[0-9]/.test(p)) score++;
+    if(/[A-Z]/.test(p)) score++;
+    if(/[^A-Za-z0-9]/.test(p)) score++;
+
+    if(score <= 1){
+      el.textContent = "Weak password. Use 8+ chars + number.";
+      el.className = "help bad";
+    }else if(score === 2){
+      el.textContent = "Medium password. Add symbol or uppercase.";
+      el.className = "help";
+    }else{
+      el.textContent = "Strong password ✅";
+      el.className = "help ok";
+    }
+    matchPassword();
+  }
+
+  // Confirm password match
+  function matchPassword(){
+    const p1 = document.getElementById("password").value || "";
+    const p2 = document.getElementById("confirm_password").value || "";
+    const el = document.getElementById("match-msg");
+
+    if(!p2){
+      el.textContent = "";
+      el.className = "help";
+      return;
+    }
+
+    if(p1 === p2){
+      el.textContent = "Passwords match ✅";
+      el.className = "help ok";
+    }else{
+      el.textContent = "Passwords do not match ❌";
+      el.className = "help bad";
+    }
+  }
+</script>
+{% endblock script %}

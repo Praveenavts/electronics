@@ -1,0 +1,127 @@
+
+.container-cart {
+    max-width: 1100px;
+    margin: auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Cart container */
+.cart-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Left section: Product list */
+.cart-product {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #789d50;
+    margin-bottom: 15px;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
+    width: 65%;
+}
+
+.cart-product img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    border: 2px solid #789d50;
+    padding: 5px;
+}
+
+/* Product Details */
+.cart-product h5 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.cart-product p {
+    color: #555;
+    font-size: 14px;
+}
+
+/* Quantity Selector */
+.cart-quantity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 110px;
+    border: 1px solid #789d50;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.cart-quantity button {
+    background-color: #789d50;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.cart-quantity span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Delete Button */
+.btn-danger {
+    border: none;
+    background: none;
+    color: red;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Right section: Order summary */
+.cart-summary {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #789d50;
+    width: 30%;
+    min-width: 250px;
+    height: fit-content;
+}
+
+.cart-summary h4 {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.cart-summary p {
+    font-size: 14px;
+    color: #333;
+}
+
+.cart-summary hr {
+    border: 1px solid #ccc;
+}
+
+.checkout-btn {
+    background-color: #789d50;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}

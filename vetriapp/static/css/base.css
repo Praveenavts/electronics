@@ -1,0 +1,244 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+ font-style: Outfit;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+.user {
+    color: white;
+}
+.badge{
+    background-color: #FFD700;
+    border-radius: 50%;
+    font-size: 12px;
+    transform: translate(-6px,-15px);
+}
+.header {
+    background-color: white; 
+    padding: 10px 20px;
+}
+.header .search-bar {
+    width: 40%;
+    border-radius: 30px;
+    
+}
+.header .icons {
+    display: flex;
+    gap: 20px;
+    font-size: 20px;
+}
+.icons i, .icons a{
+    color: black;
+    text-decoration: none;
+}
+.header .logo {
+    height: 50px;
+}
+.navbar {
+    background-color: #FFD700; 
+    height: 70px;
+}
+.navbar-nav .nav-link {
+    color: black;
+    font-weight: bold;
+}
+.navbar-nav .nav-link:hover {
+    color: white;
+}
+.brand-logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .brand-logo i {
+    font-size: 26px;
+    margin-right: 8px;
+    color: #000;
+    background-color: #ffd700;
+    padding: 4px;
+    border-radius: 4px;
+  }
+  .brand-logo span {
+    color: #ffc107;
+    margin-left: 5px;
+  }
+.dropdown-menu {
+    background: white;
+    /* border: 1px solid green; */
+}
+.dropdown-menu .dropdown-item {
+    color: black;
+}
+.dropdown-menu .dropdown-item:hover {
+    background-color: lightgreen;
+}
+#search-results {
+    max-height: 200px;
+    transform: translateY(100px);
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ddd;
+    z-index: 1000;
+}
+.fa-search {
+    left: 10px; 
+    font-size: 16px;
+}
+.custom-yellow-btn {
+    background-color: #FFD700;
+    color: #000;
+    border: 1px solid #6B8E23;
+    font-weight: 600;
+  }
+  
+  .custom-yellow-btn:hover {
+    background-color: #e6c200;
+    color: black;
+  }
+  
+
+@media screen and (max-width: 1024px){
+    #navbarNav{
+        font-size: 12px;
+        width: 90%;
+    }
+    .dropdown{
+        width: 130px;
+        margin-left: -30px;
+    }
+}
+@media (max-width: 991px) {
+    .navbar-collapse {
+        position: fixed;
+        top: 0;
+        margin-top: 155px;
+        right: -100%; /* Hidden by default */
+        width: 250px;
+        height: 75%;
+        background-color: #FFD700;
+        color: #6B8E23;
+        box-shadow: -3px 0 10px rgba(0, 0, 0, 0.1);
+        padding-top: 50px;
+        transition: right 0.3s ease-in-out;
+        border: 2px solid #6B8E23;
+        max-width: 200px;
+        border-radius: 10px;
+    }
+    
+    .navbar-collapse.show {
+        right: 0; /* Slide in when toggled */
+    }
+    
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .nav-item {
+        margin-bottom: 15px;
+    }
+    
+    .btn-danger {
+        width: 100px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    .header .search-bar {
+        width: 30%;
+        margin-left: 20px;
+    }
+    .header .icons {
+        gap: 5px;
+        font-size: 18px;
+    }
+    .dropdown{
+        width: 130px;
+        margin-left: 0px;
+    }
+    .badge{
+        background-color: #FFD700;
+        border-radius: 50%;
+        font-size: 10px;
+        transform: translate(-5px,-15px);
+    }
+    .cart{
+        margin-left: 10px;
+    }
+    .navbar {
+        height: auto;
+        padding: 10px 0;
+    }
+
+}
+
+@media screen and (max-width: 426px) {
+    .header {
+        padding: 10px;
+        flex-direction: column;
+        text-align: center;
+    }
+    .dropdown{
+        width: 130px;
+        margin-left: 0px;
+    }
+    .header .search-bar {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .header .icons {
+        font-size: 16px;
+        gap: 8px;
+    }
+
+    .navbar {
+        height: auto;
+        padding: 10px 0;
+    }
+
+    .badge {
+        font-size: 10px;
+        transform: translate(-4px, -10px);
+    }
+}
+
+
+.footer {
+    background-color: #6B8E23; 
+    color: white;
+    padding: 40px 0;
+}
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+.footer a:hover {
+    text-decoration: underline;
+}
+.footer .icon {
+    color: #FFD700;
+    margin-right: 10px;
+}
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid white;
+}
+
+
+@media screen and (max-width: 426px){
+    .row{
+        margin-left: 30px;
+    }
+}

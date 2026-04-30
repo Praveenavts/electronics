@@ -1,0 +1,197 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}
+Terms & Conditions
+{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+    --brand:#FFD700;
+    --ink:#0f172a;
+    --muted:#475569;
+    --line:#e5e7eb;
+    --bg:#f8fafc;
+}
+
+.tc-hero{
+    background: linear-gradient(135deg, #fff7cc, #ffffff);
+    padding: 70px 20px;
+    text-align: center;
+}
+
+.tc-hero h1{
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--ink);
+}
+
+.tc-hero h1 i{
+    color: var(--brand);
+    margin-right: 10px;
+}
+
+.tc-hero p{
+    max-width: 700px;
+    margin: 12px auto 0;
+    color: var(--muted);
+    font-size: 16px;
+}
+
+.tc-wrapper{
+    max-width: 900px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 18px;
+    padding: 40px;
+    box-shadow: 0 20px 50px rgba(2,6,23,.08);
+}
+
+.tc-section{
+    border-left: 5px solid var(--brand);
+    padding-left: 20px;
+    margin-bottom: 35px;
+}
+
+.tc-section h3{
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+}
+
+.tc-section h3 i{
+    color: var(--brand);
+    margin-right: 8px;
+}
+
+.tc-section p{
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: #334155;
+    margin-bottom: 8px;
+}
+
+.tc-footer-note{
+    margin-top: 40px;
+    padding: 18px;
+    border-radius: 12px;
+    background: #fffbe6;
+    border: 1px dashed var(--brand);
+    font-size: 14px;
+    color: #7a5c00;
+}
+
+@media(max-width:768px){
+    .tc-hero h1{font-size: 28px;}
+    .tc-wrapper{padding: 25px;}
+}
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="tc-hero">
+    <h1><i class="fa-solid fa-file-contract"></i> Terms & Conditions</h1>
+    <p>
+        Please read these terms carefully before using Vetri Electronics.
+        By accessing or purchasing from our platform, you agree to these terms.
+    </p>
+</section>
+
+<!-- CONTENT -->
+<section class="tc-wrapper">
+
+    <div class="tc-section">
+        <h3><i class="fa-solid fa-circle-info"></i> Introduction</h3>
+        <p>
+            These Terms & Conditions govern your use of Vetri Electronics website,
+            services, and product purchases.
+        </p>
+        <p>
+            By accessing this website, you confirm that you agree to comply with
+            all applicable laws and regulations.
+        </p>
+    </div>
+
+    <div class="tc-section">
+        <h3><i class="fa-solid fa-credit-card"></i> Payment Terms</h3>
+        <p>
+            All payments must be completed at checkout using supported payment methods
+            such as UPI, Cards, Net Banking, or Wallets.
+        </p>
+        <p>
+            Vetri Electronics reserves the right to modify payment options without
+            prior notice.
+        </p>
+    </div>
+
+    <div class="tc-section">
+        <h3><i class="fa-solid fa-truck-fast"></i> Shipping & Delivery</h3>
+        <p>
+            Orders are usually processed within 24–48 hours and delivered within
+            2–5 business days depending on your location.
+        </p>
+        <p>
+            Delivery timelines are estimates and may vary due to logistics or
+            unforeseen conditions.
+        </p>
+    </div>
+
+    <div class="tc-section">
+        <h3><i class="fa-solid fa-rotate-left"></i> Return & Refund Policy</h3>
+        <p>
+            Returns are accepted within 7 days of delivery only for damaged,
+            defective, or incorrect products.
+        </p>
+        <p>
+            Refunds will be processed to the original payment method after
+            verification.
+        </p>
+    </div>
+
+    <div class="tc-section">
+        <h3><i class="fa-solid fa-shield-halved"></i> Warranty & Liability</h3>
+        <p>
+            Products are covered only by the manufacturer’s warranty, if applicable.
+        </p>
+        <p>
+            Vetri Electronics is not liable for misuse, accidental damage,
+            or unauthorized modifications.
+        </p>
+    </div>
+
+    <div class="tc-section">
+        <h3><i class="fa-solid fa-scale-balanced"></i> Dispute Resolution</h3>
+        <p>
+            Any disputes should first be reported to our support team for resolution.
+        </p>
+        <p>
+            If unresolved, disputes shall be handled through arbitration as per
+            Indian laws.
+        </p>
+    </div>
+
+    <div class="tc-section">
+        <h3><i class="fa-solid fa-gavel"></i> Governing Law</h3>
+        <p>
+            These terms are governed by the laws of India, with jurisdiction
+            limited to Tamil Nadu courts.
+        </p>
+    </div>
+
+    <div class="tc-footer-note">
+        <strong>Note:</strong> Vetri Electronics reserves the right to update or
+        modify these Terms & Conditions at any time without prior notice.
+    </div>
+
+</section>
+
+{% endblock content %}
+
+{% block script %}
+{% endblock script %}

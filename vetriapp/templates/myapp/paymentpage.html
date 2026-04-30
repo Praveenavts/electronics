@@ -1,0 +1,517 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}Checkout{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+  :root{
+    --brand:#0a1f63;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:rgba(15,23,42,.12);
+    --bg:#f7f9ff;
+    --card:#ffffff;
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --shadow: 0 26px 90px rgba(2,6,23,.12);
+    --r16:16px;
+    --r22:22px;
+    --r28:28px;
+  }
+
+  .ck-page{
+    background:
+      radial-gradient(900px 460px at 12% 0%, rgba(255,215,0,.16), transparent 60%),
+      radial-gradient(900px 460px at 90% 10%, rgba(10,31,99,.10), transparent 62%),
+      var(--bg);
+    padding: 26px 0 60px;
+    min-height: 70vh;
+  }
+
+  .ck-head{
+    text-align:center;
+    margin-bottom: 14px;
+  }
+  .ck-head h2{
+    margin:0;
+    font-weight: 1200;
+    color: var(--ink);
+    font-size: clamp(22px, 2.6vw, 34px);
+  }
+  .ck-head p{
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-weight: 800;
+  }
+
+  .ck-steps{
+    display:flex;
+    justify-content:center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 16px 0 18px;
+  }
+  .ck-step{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.85);
+    border: 1px solid rgba(15,23,42,.10);
+    font-weight: 1000;
+    color: rgba(15,23,42,.75);
+    box-shadow: 0 10px 25px rgba(2,6,23,.05);
+    font-size: 13px;
+  }
+  .ck-step i{ color: rgba(10,31,99,.65); }
+  .ck-step.active{
+    background: rgba(255,215,0,.22);
+    border-color: rgba(255,180,0,.35);
+    color:#7a4b00;
+  }
+  .ck-step.active i{ color:#7a4b00; }
+
+  .ck-shell{
+    background: var(--card);
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: var(--r28);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  .ck-grid{
+    display:grid;
+    grid-template-columns: 1.55fr .85fr;
+    gap: 0;
+  }
+
+  .ck-left{
+    padding: 18px;
+    border-right: 1px solid rgba(15,23,42,.08);
+    background: linear-gradient(180deg,#fff,#fbfbff);
+  }
+
+  .ck-titleRow{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .ck-titleRow h3{
+    margin:0;
+    font-weight: 1200;
+    color: var(--ink);
+  }
+  .ck-safe{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(10,31,99,.06);
+    border: 1px solid rgba(10,31,99,.10);
+    color: #0a1f63;
+    font-weight: 1000;
+    font-size: 12px;
+  }
+
+  .ck-card{
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: var(--r22);
+    padding: 14px;
+    background:#fff;
+    box-shadow: 0 14px 45px rgba(2,6,23,.06);
+  }
+
+  .ck-label{
+    font-weight: 1000;
+    color: rgba(15,23,42,.85);
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+
+  .ck-input{
+    border: 1.8px solid rgba(255,180,0,.45);
+    border-radius: 14px;
+    padding: 12px 12px;
+    font-weight: 800;
+    outline: none;
+    transition: .15s ease;
+    background: #fff;
+  }
+  .ck-input:focus{
+    border-color: rgba(255,180,0,.95);
+    box-shadow: 0 0 0 .22rem rgba(255,180,0,.18);
+  }
+
+  .ck-grid2{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .ck-grid3{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .ck-error{
+    margin: 6px 0 0;
+    color:#ef4444;
+    font-weight: 900;
+    font-size: 12px;
+    display:none;
+  }
+
+  .ck-check{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    margin-top: 10px;
+    font-weight: 900;
+    color: rgba(15,23,42,.75);
+  }
+
+  .ck-right{
+    padding: 16px;
+    background: linear-gradient(180deg,#fff,#fbfbff);
+  }
+  .ck-summary{
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: var(--r28);
+    background:#fff;
+    box-shadow: 0 18px 60px rgba(2,6,23,.08);
+    padding: 16px;
+    position: sticky;
+    top: 110px;
+  }
+  .ck-summary h4{
+    margin: 0 0 10px;
+    font-weight: 1200;
+    color: var(--ink);
+  }
+
+  .ck-row{
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    gap: 12px;
+    padding: 8px 0;
+    color: rgba(15,23,42,.85);
+    font-weight: 950;
+  }
+  .ck-row small{
+    color: var(--muted);
+    font-weight: 800;
+  }
+  .ck-divider{
+    height: 1px;
+    background: rgba(15,23,42,.10);
+    margin: 10px 0;
+  }
+  .ck-total{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-weight: 1300;
+    color: var(--ink);
+    font-size: 18px;
+  }
+
+  .ck-paybtn{
+    width:100%;
+    margin-top: 12px;
+    border:none;
+    border-radius: 18px;
+    padding: 12px 14px;
+    font-weight: 1200;
+    background: linear-gradient(120deg, var(--yellow), var(--yellow2));
+    color:#111827;
+    box-shadow: 0 18px 45px rgba(255,180,0,.18);
+    transition:.15s ease;
+  }
+  .ck-paybtn:hover{
+    transform: translateY(-1px);
+  }
+
+  .ck-miniNote{
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 850;
+    color: rgba(15,23,42,.70);
+    text-align:center;
+  }
+
+  @media (max-width: 992px){
+    .ck-grid{ grid-template-columns: 1fr; }
+    .ck-left{ border-right:none; border-bottom:1px solid rgba(15,23,42,.08); }
+    .ck-summary{ position: static; top:auto; }
+  }
+  @media (max-width: 576px){
+    .ck-grid2, .ck-grid3{ grid-template-columns: 1fr; }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<section class="ck-page">
+  <div class="container">
+
+    <div class="ck-head">
+      <h2>Checkout</h2>
+      <p>Billing Address + Payment confirmation</p>
+    </div>
+
+    <div class="ck-steps">
+      <div class="ck-step"><i class="fa-solid fa-cart-shopping"></i> Cart</div>
+      <div class="ck-step active"><i class="fa-solid fa-location-dot"></i> Address</div>
+      <div class="ck-step"><i class="fa-solid fa-credit-card"></i> Payment</div>
+    </div>
+
+    <div class="ck-shell">
+      <div class="ck-grid">
+
+        <div class="ck-left">
+          <div class="ck-titleRow">
+            <h3>Billing Address</h3>
+            <span class="ck-safe"><i class="fa-solid fa-shield-halved"></i> Secure Checkout</span>
+          </div>
+
+          <div class="ck-card">
+            <form id="billingForm" method="POST" onsubmit="return false;">
+              {% csrf_token %}
+
+              <div class="mb-3">
+                <div class="ck-label">Email</div>
+                <input type="email" class="form-control ck-input" id="email" name="email"
+                       placeholder="Enter Your Email ID" required oninput="validateEmail(this)">
+                <p id="email-error" class="ck-error"></p>
+              </div>
+
+              <div class="mb-3">
+                <div class="ck-label">Country/Region</div>
+                <input type="text" class="form-control ck-input" id="country" name="country"
+                       placeholder="Enter Your Country" required oninput="validateLetters(this)">
+              </div>
+
+              <div class="ck-grid2 mb-3">
+                <div>
+                  <div class="ck-label">First Name</div>
+                  <input type="text" class="form-control ck-input" id="first_name" name="first_name"
+                         placeholder="Enter Your First Name" required oninput="validateLetters(this)">
+                </div>
+                <div>
+                  <div class="ck-label">Last Name</div>
+                  <input type="text" class="form-control ck-input" id="last_name" name="last_name"
+                         placeholder="Enter Your Last Name" required oninput="validateLetters(this)">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="ck-label">Address</div>
+                <input type="text" class="form-control ck-input" id="address" name="address"
+                       placeholder="Enter Your Address" required>
+              </div>
+
+              <div class="mb-3">
+                <div class="ck-label">Apartment / Suite (optional)</div>
+                <input type="text" class="form-control ck-input" id="apartment" name="apartment"
+                       placeholder="Apartment or Suite">
+              </div>
+
+              <div class="ck-grid3 mb-3">
+                <div>
+                  <div class="ck-label">City</div>
+                  <input type="text" class="form-control ck-input" id="city" name="city"
+                         placeholder="City" required oninput="validateLetters(this)">
+                </div>
+                <div>
+                  <div class="ck-label">State</div>
+                  <input type="text" class="form-control ck-input" id="state" name="state"
+                         placeholder="State" required oninput="validateLetters(this)">
+                </div>
+                <div>
+                  <div class="ck-label">PIN Code</div>
+                  <input type="text" class="form-control ck-input" id="pincode" name="pincode"
+                         placeholder="Pincode" required oninput="validateNumbers(this, 6)">
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <div class="ck-label">Phone Number</div>
+                <input type="text" class="form-control ck-input" id="phone" name="phone"
+                       placeholder="Mobile Number" required oninput="validateNumbers(this, 10)">
+              </div>
+
+              <label class="ck-check">
+                <input type="checkbox" name="saved_info" class="form-check-input" style="margin-top:0;">
+                Save this information for next time
+              </label>
+
+              <input type="hidden" name="amount" value="{{ total_price }}">
+
+              <div class="d-lg-none mt-3">
+                <button type="button" class="ck-paybtn" onclick="startCashfreePayment()">
+                  Confirm Payment <i class="fa-solid fa-arrow-right ms-1"></i>
+                </button>
+                <div class="ck-miniNote">You will be redirected after confirmation.</div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="ck-right">
+          <div class="ck-summary">
+            <h4>Order Summary</h4>
+
+            <div class="ck-row">
+              <span>Subtotal</span>
+              <span>₹{{ total_price|floatformat:2 }}</span>
+            </div>
+
+            <div class="ck-row">
+              <span>Delivery</span>
+              <small>Free</small>
+            </div>
+
+            <div class="ck-row">
+              <span>Payment</span>
+              <small>Cashfree Secure Checkout</small>
+            </div>
+
+            <div class="ck-divider"></div>
+
+            <div class="ck-total">
+              <span>Total</span>
+              <span>₹{{ total_price|floatformat:2 }}</span>
+            </div>
+
+            <div class="d-none d-lg-block mt-2">
+              <button type="button" class="ck-paybtn" onclick="startCashfreePayment()">
+                Confirm Payment <i class="fa-solid fa-lock ms-1"></i>
+              </button>
+              <div class="ck-miniNote">Secure payment • No card details stored.</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+
+<script>
+  const cashfree = Cashfree({
+    mode: "sandbox"
+  });
+
+  function validateLetters(input) {
+    input.value = input.value.replace(/[^A-Za-z\\s]/g, '');
+  }
+
+  function validateNumbers(input, maxLength) {
+    input.value = input.value.replace(/[^0-9]/g, '').slice(0, maxLength);
+  }
+
+  function validateEmail(input) {
+  let emailError = document.getElementById("email-error");
+
+  if (!input.checkValidity()) {
+    emailError.innerText = "Enter a valid email address.";
+    emailError.style.display = "block";
+  } else {
+    emailError.style.display = "none";
+  }
+}
+
+  function validateForm() {
+    const email = document.getElementById("email");
+    const country = document.getElementById("country");
+    const firstName = document.getElementById("first_name");
+    const lastName = document.getElementById("last_name");
+    const address = document.getElementById("address");
+    const city = document.getElementById("city");
+    const state = document.getElementById("state");
+    const pincode = document.getElementById("pincode");
+    const phone = document.getElementById("phone");
+    const emailError = document.getElementById("email-error");
+
+    if (
+      !email.value.trim() ||
+      !country.value.trim() ||
+      !firstName.value.trim() ||
+      !lastName.value.trim() ||
+      !address.value.trim() ||
+      !city.value.trim() ||
+      !state.value.trim() ||
+      !pincode.value.trim() ||
+      !phone.value.trim()
+    ) {
+      alert("Please fill all required fields.");
+      return false;
+    }
+
+    if (emailError.style.display === "block") {
+      alert("Please enter a valid email.");
+      return false;
+    }
+
+    if (pincode.value.length !== 6) {
+      alert("PIN Code must be 6 digits.");
+      return false;
+    }
+
+    if (phone.value.length !== 10) {
+      alert("Phone number must be 10 digits.");
+      return false;
+    }
+
+    return true;
+  }
+
+  async function startCashfreePayment() {
+    if (!validateForm()) return;
+
+    const form = document.getElementById("billingForm");
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("{% url 'process_payment' %}", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "X-Requested-With": "XMLHttpRequest"
+        }
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        alert(data.message || "Payment initiation failed");
+        return;
+      }
+
+      await cashfree.checkout({
+        paymentSessionId: data.payment_session_id,
+        redirectTarget: "_self"
+      });
+
+    } catch (error) {
+      console.error("Payment error:", error);
+      alert("Something went wrong while starting payment.");
+    }
+  }
+</script>
+{% endblock script %}

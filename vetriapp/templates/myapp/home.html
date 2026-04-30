@@ -1,0 +1,535 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Vetri Electronics
+{% endblock title %}
+
+{% block extra_css %}
+<style>
+  :root{
+    --brand:#0a1f63;
+    --accent:#ffb400;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:#e5e7eb;
+    --card:#ffffff;
+    --radius:18px;
+  }
+
+  .ve-cat-card{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(2,6,23,.06);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    height: 100%;
+  }
+  .ve-cat-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 18px 45px rgba(10,31,99,.14);
+    border-color: rgba(10,31,99,.18);
+  }
+
+  .ve-cat-img{
+    padding: 16px 12px 8px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(180deg, #ffffff, #f3f6ff);
+  }
+  .ve-cat-img img{
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #eef0f7;
+    transition: transform .18s ease;
+  }
+  .ve-cat-card:hover .ve-cat-img img{ transform: scale(1.06); }
+
+  .ve-cat-body{
+    padding: 10px 12px 14px;
+    text-align: center;
+  }
+  .ve-cat-title{
+    margin: 0;
+    font-weight: 900;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .ve-cat-link{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--brand);
+    opacity: .9;
+  }
+  .ve-cat-card:hover .ve-cat-link{ color: #08184d; }
+
+  /* ===== section heading ===== */
+.ve-sec-head .ve-title{
+  font-weight: 950;
+  color: var(--ink);
+  margin: 0;
+}
+.ve-sec-head .ve-sub{
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+
+/* ===== feature cards ===== */
+.ve-feature-card{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 16px 45px rgba(2,6,23,.07);
+  position: relative;
+  overflow: hidden;
+  transition: .2s ease;
+}
+.ve-feature-card::before{
+  content:"";
+  position:absolute;
+  right:-50px; top:-50px;
+  width:140px; height:140px;
+  background: rgba(255,180,0,.18);
+  border-radius: 35px;
+  transform: rotate(25deg);
+}
+.ve-feature-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 24px 70px rgba(10,31,99,.14);
+  border-color: rgba(10,31,99,.18);
+}
+.ve-feature-card h5{
+  font-weight: 950;
+  color: var(--ink);
+  margin: 10px 0 8px;
+  position: relative;
+  z-index: 2;
+}
+.ve-feature-card p{
+  color: var(--muted);
+  margin: 0;
+  font-size: 14px;
+  position: relative;
+  z-index: 2;
+}
+.ve-ico{
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,180,0,.22);
+  color: #9a5a00;
+  font-size: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== why shop mini cards ===== */
+.ve-mini{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px 12px;
+  text-align: center;
+  box-shadow: 0 12px 35px rgba(2,6,23,.06);
+  transition: .2s ease;
+}
+.ve-mini:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 20px 55px rgba(10,31,99,.12);
+}
+.ve-mini i{
+  font-size: 28px;
+  color: var(--accent);
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.ve-mini h6{
+  font-weight: 950;
+  margin: 0;
+  color: var(--ink);
+}
+.ve-mini p{
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+/* ===== promo band ===== */
+.ve-promo{
+  background: linear-gradient(120deg, #ffb400, #ffd36b);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(10,31,99,.15);
+  border: 1px solid rgba(0,0,0,.06);
+}
+.ve-promo h2{
+  font-weight: 1000;
+  margin: 0 0 8px;
+  color: #111827;
+}
+.ve-promo p{
+  margin: 0;
+  color: #1f2937;
+  opacity: .9;
+}
+.ve-btn-dark{
+  background: #0f172a !important;
+  border: none !important;
+  border-radius: 14px !important;
+  font-weight: 900 !important;
+  padding: 10px 18px !important;
+}
+
+/* ===== big left card ===== */
+.ve-big-left{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 18px 55px rgba(2,6,23,.08);
+  position: relative;
+  overflow: hidden;
+}
+.ve-big-left::after{
+  content:"";
+  position:absolute;
+  right:-80px; bottom:-80px;
+  width:220px; height:220px;
+  background: rgba(10,31,99,.07);
+  border-radius: 60px;
+  transform: rotate(20deg);
+}
+.ve-big-left h2{
+  font-weight: 1000;
+  color: var(--ink);
+  margin: 10px 0 10px;
+  position: relative;
+  z-index: 2;
+}
+.ve-big-left p{
+  color: var(--muted);
+  margin: 0 0 14px;
+  position: relative;
+  z-index: 2;
+}
+.ve-badge{
+  display:inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,180,0,.22);
+  color: #8a4f00;
+  font-weight: 900;
+  font-size: 12px;
+  position: relative;
+  z-index: 2;
+}
+.ve-btn-accent{
+  border-radius: 14px !important;
+  font-weight: 900 !important;
+  padding: 10px 16px !important;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== right grid boxes ===== */
+.ve-gridbox{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 12px 35px rgba(2,6,23,.06);
+  transition: .2s ease;
+}
+.ve-gridbox:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 20px 55px rgba(10,31,99,.12);
+}
+.ve-gridbox i{
+  font-size: 26px;
+  color: var(--accent);
+}
+.ve-gridbox h6{
+  margin: 10px 0 6px;
+  font-weight: 950;
+  color: var(--ink);
+}
+.ve-gridbox p{
+  margin: 0;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+</style>
+{% endblock extra_css %}
+{% block content %}
+  <div class="main-container">
+    <div class="container-1">
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+            <div class="carousel-inner">
+                {% for banner in banners %}
+                   <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <p>{{ banner.image.url }}</p>  
+                        <img src="{{ banner.banner.url }}" class="d-block w-100" alt="{{ banner.category_name }}">
+                      
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+
+  <!-- Two Column Section -->
+  <div class="container two-col-section">
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <img src="/static/images/vetrielectronics.png" class="img-fluid rounded colimg" alt="Column Image">
+      </div>
+      <div class="col-md-6 d-flex align-items-center">
+        <div>
+          <h2>Why Choose Vetri Electronics?</h2>
+          <p>We offer top quality electronics at unbeatable prices. Explore a wide range of mobile, computer, and smart home solutions tailored to your needs.</p>
+          <a href="#" class="btn btn-warning mt-3">Shop Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- CATEGORY SECTION (BETTER UI) -->
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold m-0">Our Categories</h2>
+    <p class="text-muted mt-2 mb-0">Choose a category to explore products</p>
+  </div>
+
+  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
+    {% for category in banners %}
+    <div class="col">
+      <a href="{% url 'products_by_category' category.id %}" class="text-decoration-none">
+        <div class="ve-cat-card h-100">
+          <div class="ve-cat-img">
+            <img src="{{ category.category.url }}" alt="{{ category.category_name }}">
+          </div>
+
+          <div class="ve-cat-body">
+            <h6 class="ve-cat-title">{{ category.category_name }}</h6>
+            <!-- <span class="ve-cat-link">Explore <i class="fa-solid fa-arrow-right"></i></span> -->
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+  <!-- =======================
+     OUR FEATURES (BETTER UI)
+======================= -->
+<section class="container my-5">
+  <div class="ve-sec-head text-center mb-4">
+    <h2 class="ve-title">Our Features</h2>
+    <p class="ve-sub">Quality, deals and support — everything in one place</p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="ve-feature-card h-100">
+        <div class="ve-ico"><i class="fa-solid fa-star"></i></div>
+        <h5>High Quality Products</h5>
+        <p>We pick verified electronics that match strong quality standards.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="ve-feature-card h-100">
+        <div class="ve-ico"><i class="fa-solid fa-tags"></i></div>
+        <h5>Affordable Prices</h5>
+        <p>Best pricing across categories with exciting offers and discounts.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="ve-feature-card h-100">
+        <div class="ve-ico"><i class="fa-solid fa-headset"></i></div>
+        <h5>Excellent Support</h5>
+        <p>Quick help for orders, service, and product guidance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =======================
+     WHY SHOP WITH US (BETTER UI)
+======================= -->
+<section class="container my-5">
+  <div class="ve-sec-head text-center mb-4">
+    <h2 class="ve-title">Why Shop With Us?</h2>
+    <p class="ve-sub">Experience excellence through every step of your shopping journey</p>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-6 col-lg-2">
+      <div class="ve-mini h-100">
+        <i class="bi bi-truck"></i>
+        <h6>Fast Shipping</h6>
+        <p>Quick delivery across India</p>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <div class="ve-mini h-100">
+        <i class="bi bi-shield-check"></i>
+        <h6>Secure Pay</h6>
+        <p>Encrypted & safe checkout</p>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <div class="ve-mini h-100">
+        <i class="bi bi-headset"></i>
+        <h6>24/7 Support</h6>
+        <p>Help when you need it</p>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <div class="ve-mini h-100">
+        <i class="bi bi-arrow-left-right"></i>
+        <h6>Easy Returns</h6>
+        <p>Hassle-free return policy</p>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <div class="ve-mini h-100">
+        <i class="bi bi-tag"></i>
+        <h6>Best Deals</h6>
+        <p>Offers on top brands</p>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <div class="ve-mini h-100">
+        <i class="bi bi-award"></i>
+        <h6>Trusted</h6>
+        <p>Verified products only</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =======================
+     FULL WIDTH PROMO (BETTER UI)
+======================= -->
+<section class="container my-5">
+  <div class="ve-promo">
+    <div class="row align-items-center g-3">
+      <div class="col-lg-8">
+        <h2>Explore the Latest Technology</h2>
+        <p>Stay ahead with cutting-edge electronics and innovative solutions available at Vetri Electronics.</p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <!-- <a href="#" class="btn ve-btn-accent btn-lg">Discover More</a> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =======================
+     TWO COLUMN COMPLEX (BETTER UI)
+======================= -->
+<section class="container my-5">
+  <div class="row g-4 align-items-stretch">
+    <div class="col-md-6">
+      <div class="ve-big-left h-100">
+        <div class="ve-badge">Vetri Picks</div>
+        <h2>Upgrade Your Lifestyle with Vetri</h2>
+        <p>From smart gadgets to essential electronics, find everything you need to transform your space. Quality, affordability, and reliability all in one place.</p>
+        <a href="#" class="btn btn-warning ve-btn-accent">Browse Collections</a>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="row g-3">
+        <div class="col-6">
+          <div class="ve-gridbox h-100">
+            <i class="bi bi-phone"></i>
+            <h6>Latest Mobiles</h6>
+            <p>Trending smartphones at best prices</p>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="ve-gridbox h-100">
+            <i class="bi bi-laptop"></i>
+            <h6>Computing Power</h6>
+            <p>Laptops & accessories for everyone</p>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="ve-gridbox h-100">
+            <i class="bi bi-tv"></i>
+            <h6>Entertainment</h6>
+            <p>Smart TVs & audio for your home</p>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="ve-gridbox h-100">
+            <i class="bi bi-lightbulb"></i>
+            <h6>Smart Living</h6>
+            <p>Gadgets for connected lifestyle</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Animation library (optional for effects) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+{% endblock content %}
+
+{% block script %}
+<script>
+    AOS.init(); 
+
+    document.querySelectorAll(".hover-animation").forEach((card) => {
+        card.addEventListener("mouseenter", function () {
+            this.setAttribute("data-aos", "flip-left");
+            this.setAttribute("data-aos-duration", "1000");
+            AOS.refresh(); 
+        });
+
+        card.addEventListener("mouseleave", function () {
+            this.removeAttribute("data-aos"); 
+            AOS.refresh();
+        });
+    });
+</script>
+{% endblock script %}

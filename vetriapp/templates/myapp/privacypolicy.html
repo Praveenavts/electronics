@@ -1,0 +1,308 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}Privacy Policy{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"/>
+
+<style>
+  :root{
+    --brand:#0a1f63;
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:rgba(15,23,42,.12);
+    --bg:#f7f9ff;
+    --card:#ffffff;
+    --shadow: 0 22px 80px rgba(2,6,23,.10);
+    --r18:18px;
+    --r26:26px;
+  }
+
+  .pp-wrap{
+    background:
+      radial-gradient(900px 480px at 12% 0%, rgba(255,215,0,.16), transparent 60%),
+      radial-gradient(900px 480px at 90% 10%, rgba(10,31,99,.10), transparent 62%),
+      var(--bg);
+    padding: 28px 0 70px;
+    min-height: 70vh;
+  }
+
+  .pp-shell{
+    max-width: 980px;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: var(--r26);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  /* Header */
+  .pp-head{
+    padding: 18px 18px 16px;
+    background: linear-gradient(180deg,#fff,#fbfbff);
+    border-bottom: 1px solid rgba(15,23,42,.10);
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .pp-title{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    margin:0;
+  }
+  .pp-badge{
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display:grid;
+    place-items:center;
+    background: rgba(255,180,0,.22);
+    color: #7a4b00;
+    border: 1px solid rgba(255,180,0,.35);
+  }
+  .pp-title h2{
+    margin:0;
+    font-weight: 1200;
+    color: var(--ink);
+    font-size: 26px;
+    line-height: 1.15;
+  }
+  .pp-title p{
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-weight: 850;
+    font-size: 13px;
+  }
+
+  .pp-chipRow{
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .pp-chip{
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(15,23,42,.10);
+    background: rgba(255,255,255,.9);
+    color: rgba(15,23,42,.80);
+    font-weight: 1000;
+    font-size: 12px;
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+  }
+  .pp-chip i{ color: rgba(10,31,99,.70); }
+  .pp-chip.yellow{
+    background: rgba(255,215,0,.22);
+    border-color: rgba(255,180,0,.35);
+    color:#7a4b00;
+  }
+  .pp-chip.yellow i{ color:#7a4b00; }
+
+  /* Body */
+  .pp-body{
+    padding: 18px;
+  }
+
+  .pp-card{
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: var(--r18);
+    background:#fff;
+    padding: 16px;
+    box-shadow: 0 14px 45px rgba(2,6,23,.06);
+    margin-bottom: 14px;
+  }
+
+  .pp-secTitle{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    font-weight: 1200;
+    color: var(--ink);
+    margin: 0 0 10px;
+    font-size: 17px;
+  }
+  .pp-ico{
+    width: 38px;
+    height: 38px;
+    border-radius: 14px;
+    display:grid;
+    place-items:center;
+    background: rgba(10,31,99,.06);
+    border: 1px solid rgba(10,31,99,.10);
+    color: #0a1f63;
+  }
+
+  .pp-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:grid;
+    gap: 10px;
+  }
+  .pp-item{
+    display:flex;
+    gap: 10px;
+    align-items:flex-start;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(15,23,42,.08);
+    background: rgba(10,31,99,.03);
+    color: rgba(15,23,42,.75);
+    font-weight: 850;
+    line-height: 1.55;
+    font-size: 14px;
+  }
+  .pp-item i{
+    margin-top: 3px;
+    color: rgba(255,180,0,.95);
+  }
+
+  /* Footer note */
+  .pp-note{
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: var(--r18);
+    border: 1px solid rgba(255,180,0,.35);
+    background: rgba(255,215,0,.18);
+    color: rgba(15,23,42,.78);
+    font-weight: 900;
+    font-size: 13px;
+    display:flex;
+    gap: 10px;
+    align-items:flex-start;
+  }
+  .pp-note i{ color:#7a4b00; margin-top: 2px; }
+
+  @media (max-width: 576px){
+    .pp-title h2{ font-size: 22px; }
+    .pp-badge{ width:42px; height:42px; }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<section class="pp-wrap">
+  <div class="container">
+
+    <div class="pp-shell" data-aos="fade-up" data-aos-duration="900">
+
+      <!-- HEADER -->
+      <div class="pp-head">
+        <div class="pp-title">
+          <div class="pp-badge" data-aos="fade-right" data-aos-duration="800">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h2>Privacy Policy</h2>
+            <p>How Vetri Electronics collects & uses your information</p>
+          </div>
+        </div>
+
+        <!-- <div class="pp-chipRow">
+          <span class="pp-chip yellow"><i class="fa-solid fa-lock"></i> Secure</span>
+          <span class="pp-chip"><i class="fa-solid fa-user-check"></i> Limited Use</span>
+          <span class="pp-chip"><i class="fa-solid fa-eye-slash"></i> No Selling</span>
+        </div>
+      </div> -->
+
+      <!-- BODY -->
+      <div class="pp-body">
+
+        <!-- 1 -->
+        <div class="pp-card" data-aos="fade-up">
+          <h3 class="pp-secTitle">
+            <span class="pp-ico"><i class="fa-solid fa-database"></i></span>
+            Information We Collect
+          </h3>
+          <ul class="pp-list">
+            <li class="pp-item"><i class="fa-solid fa-circle-check"></i>
+              We collect personal information only when needed (contact, registration, service requests).
+            </li>
+            <li class="pp-item"><i class="fa-solid fa-circle-check"></i>
+              We use the data internally to process orders and improve our services.
+            </li>
+          </ul>
+        </div>
+
+        <!-- 2 -->
+        <div class="pp-card" data-aos="fade-up">
+          <h3 class="pp-secTitle">
+            <span class="pp-ico"><i class="fa-solid fa-cookie-bite"></i></span>
+            Cookies & Tracking
+          </h3>
+          <ul class="pp-list">
+            <li class="pp-item"><i class="fa-solid fa-circle-check"></i>
+              Cookies help improve your browsing experience. You can disable cookies in browser settings (some features may not work).
+            </li>
+            <li class="pp-item"><i class="fa-solid fa-circle-check"></i>
+              We may use basic analytics (like visit time/browser type) to improve performance and user experience.
+            </li>
+          </ul>
+        </div>
+
+        <!-- 3 -->
+        <div class="pp-card" data-aos="fade-up">
+          <h3 class="pp-secTitle">
+            <span class="pp-ico"><i class="fa-solid fa-child"></i></span>
+            Children's Privacy
+          </h3>
+          <ul class="pp-list">
+            <li class="pp-item"><i class="fa-solid fa-circle-check"></i>
+              This website is not intended for children under 13, and we do not knowingly collect their personal data.
+            </li>
+          </ul>
+        </div>
+
+        <!-- 4 -->
+        <div class="pp-card" data-aos="fade-up">
+          <h3 class="pp-secTitle">
+            <span class="pp-ico"><i class="fa-solid fa-user-secret"></i></span>
+            Non-Personal Data
+          </h3>
+          <ul class="pp-list">
+            <li class="pp-item"><i class="fa-solid fa-circle-check"></i>
+              Non-identifiable data (browser/device/usage trends) may be collected for analytics and site improvement.
+            </li>
+          </ul>
+        </div>
+
+        <!-- 5 -->
+        <div class="pp-card" data-aos="fade-up">
+          <h3 class="pp-secTitle">
+            <span class="pp-ico"><i class="fa-solid fa-share-nodes"></i></span>
+            Data Disclosure
+          </h3>
+          <ul class="pp-list">
+            <li class="pp-item"><i class="fa-solid fa-circle-check"></i>
+              We do not sell your data. If the business is transferred, user data may be part of that transfer, and you’ll be informed via the website.
+            </li>
+          </ul>
+        </div>
+
+        <div class="pp-note" data-aos="fade-up">
+          <i class="fa-solid fa-circle-info"></i>
+          Policy updates (if any) will be posted on the website. For questions, use the Contact page.
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({ once:true, offset: 80 });
+</script>
+{% endblock script %}

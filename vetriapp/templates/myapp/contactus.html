@@ -1,0 +1,427 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - Vetri Electronics{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+  :root{
+    --brand:#0a1f63;
+    --brand2:#08184d;
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --bg:#f7f9ff;
+    --line:rgba(15,23,42,.12);
+    --card:#ffffff;
+    --shadow: 0 26px 90px rgba(2,6,23,.12);
+    --r18:18px;
+    --r24:24px;
+    --r32:32px;
+  }
+
+  /* Page */
+  .veC-page{
+    background:
+      radial-gradient(900px 460px at 12% 0%, rgba(255,215,0,.18), transparent 60%),
+      radial-gradient(900px 460px at 90% 10%, rgba(10,31,99,.10), transparent 62%),
+      var(--bg);
+    padding: 52px 0 70px;
+    min-height: 70vh;
+  }
+
+  /* Top heading */
+  .veC-head{
+    text-align:center;
+    margin-bottom: 22px;
+  }
+  .veC-head h1{
+    font-weight: 1200;
+    letter-spacing: .2px;
+    color: var(--ink);
+    margin: 0;
+    font-size: clamp(28px, 3.8vw, 44px);
+  }
+  .veC-head h1 span{
+    background: linear-gradient(120deg, rgba(255,215,0,.55), rgba(255,180,0,.20));
+    padding: 2px 12px;
+    border-radius: 999px;
+    color: #7a4b00;
+  }
+  .veC-head p{
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-weight: 750;
+  }
+
+  /* Shell */
+  .veC-shell{
+    border-radius: var(--r32);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+    border: 1px solid rgba(15,23,42,.10);
+    background: #fff;
+  }
+
+  /* Left panel */
+  .veC-left{
+    padding: 26px;
+    height: 100%;
+    background:
+      linear-gradient(180deg,#ffffff,#f3f6ff);
+    position: relative;
+  }
+  .veC-left:before{
+    content:"";
+    position:absolute;
+    inset: 0;
+    background:
+      radial-gradient(520px 260px at 20% 10%, rgba(255,215,0,.20), transparent 60%),
+      radial-gradient(520px 260px at 80% 10%, rgba(10,31,99,.12), transparent 60%);
+    pointer-events:none;
+  }
+  .veC-left > *{ position: relative; z-index: 2; }
+
+  .veC-pill{
+    display:inline-flex;
+    align-items:center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255,215,0,.25);
+    border: 1px solid rgba(255,180,0,.35);
+    font-weight: 1100;
+    color:#7a4b00;
+    font-size: 13px;
+  }
+
+  .veC-left h3{
+    margin: 16px 0 8px;
+    font-weight: 1200;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .veC-left .sub{
+    color: var(--muted);
+    font-weight: 750;
+    margin: 0 0 16px;
+    line-height: 1.7;
+  }
+
+  /* Contact cards */
+  .veC-cards{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .veC-card{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    padding: 14px 14px;
+    background: rgba(255,255,255,.9);
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: var(--r24);
+    transition: .18s ease;
+  }
+  .veC-card:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 18px 50px rgba(2,6,23,.10);
+  }
+  .veC-ico{
+    width: 46px;
+    height: 46px;
+    border-radius: 18px;
+    display:grid;
+    place-items:center;
+    background: linear-gradient(120deg, rgba(255,215,0,.35), rgba(255,180,0,.14));
+    border: 1px solid rgba(255,180,0,.35);
+    color:#7a4b00;
+    font-size: 18px;
+    flex: 0 0 auto;
+  }
+  .veC-card b{
+    display:block;
+    font-weight: 1100;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .veC-card span{
+    color: var(--muted);
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  /* Map */
+  .veC-map{
+    margin-top: 14px;
+    border-radius: var(--r24);
+    overflow:hidden;
+    border: 1px solid rgba(15,23,42,.12);
+    background:#fff;
+  }
+  .veC-map iframe{
+    width:100%;
+    height: 250px;
+    border:0;
+    display:block;
+  }
+
+  /* Right panel */
+  .veC-right{
+    padding: 26px;
+    height: 100%;
+    background: #fff;
+  }
+
+  .veC-formBox{
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: var(--r32);
+    padding: 18px;
+    background: rgba(255,255,255,.95);
+    box-shadow: 0 16px 55px rgba(2,6,23,.06);
+  }
+
+  .veC-formBox h4{
+    margin: 0;
+    font-weight: 1200;
+    color: var(--ink);
+  }
+  .veC-formBox p{
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-weight: 750;
+  }
+
+  /* Inputs */
+  .veC-field{ margin-top: 14px; }
+  .veC-label{
+    font-size: 12px;
+    font-weight: 1000;
+    color: rgba(15,23,42,.78);
+    margin-bottom: 6px;
+    display:block;
+  }
+  .veC-inputWrap{
+    position: relative;
+  }
+  .veC-input{
+    width: 100%;
+    border: 1px solid rgba(15,23,42,.14);
+    border-radius: 18px;
+    padding: 12px 14px 12px 44px;
+    outline: none;
+    font-weight: 850;
+    background: #fff;
+    transition: .15s ease;
+  }
+  .veC-input:focus{
+    border-color: rgba(255,180,0,.70);
+    box-shadow: 0 0 0 .2rem rgba(255,180,0,.18);
+  }
+  .veC-inIco{
+    position:absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    border-radius: 10px;
+    display:grid;
+    place-items:center;
+    background: rgba(255,215,0,.20);
+    border: 1px solid rgba(255,180,0,.35);
+    color:#7a4b00;
+    font-size: 14px;
+  }
+
+  textarea.veC-input{
+    min-height: 120px;
+    resize: vertical;
+    padding-top: 12px;
+  }
+
+  /* Button */
+  .veC-btn{
+    width: 100%;
+    margin-top: 16px;
+    border: none;
+    border-radius: 18px;
+    padding: 12px 14px;
+    font-weight: 1200;
+    color: #111827;
+    background: linear-gradient(120deg, var(--yellow), var(--yellow2));
+    box-shadow: 0 18px 45px rgba(255,180,0,.18);
+    transition: .15s ease;
+  }
+  .veC-btn:hover{ transform: translateY(-1px); filter: brightness(.99); }
+
+  .veC-note{
+    margin-top: 10px;
+    text-align:center;
+    color: rgba(15,23,42,.70);
+    font-weight: 750;
+    font-size: 12px;
+  }
+
+  /* Responsive */
+  @media (max-width: 992px){
+    .veC-left{ border-bottom: 1px solid rgba(15,23,42,.10); }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<section class="veC-page">
+  <div class="container">
+
+    <div class="veC-head">
+      <h1>Contact <span>Vetri Electronics</span></h1>
+      <p>Product enquiry • Order support • Warranty & Service — message us anytime.</p>
+    </div>
+
+    <div class="veC-shell">
+      <div class="row g-0">
+
+        <!-- LEFT -->
+        <div class="col-lg-5">
+          <div class="veC-left">
+            <div class="veC-pill">
+              <i class="fa-solid fa-headset"></i> Support Team Available
+            </div>
+
+            <h3>We’re here to help you</h3>
+            <p class="sub">
+              Contact us for any questions about products, orders, returns, or service.
+              We respond quickly.
+            </p>
+
+            <div class="veC-cards">
+              <div class="veC-card">
+                <div class="veC-ico"><i class="fa-solid fa-phone"></i></div>
+                <div>
+                  <b>Call</b>
+                  <span>+91 00000 00000</span>
+                </div>
+              </div>
+
+              <div class="veC-card">
+                <div class="veC-ico"><i class="fa-solid fa-envelope"></i></div>
+                <div>
+                  <b>Email</b>
+                  <span>support@vetrielectronics.com</span>
+                </div>
+              </div>
+
+              <div class="veC-card">
+                <div class="veC-ico"><i class="fa-solid fa-location-dot"></i></div>
+                <div>
+                  <b>Location</b>
+                  <span>Tamil Nadu, India</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="veC-map">
+              <iframe
+                src="https://www.google.com/maps?q=8.1816,77.4282&hl=en&z=14&output=embed"
+                loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="col-lg-7">
+          <div class="veC-right">
+            <div class="veC-formBox">
+              <h4>Send a Message</h4>
+              <p>Fill details below — we will contact you soon.</p>
+
+              <!-- ✅ NORMAL POST (views change இல்லாம work ஆகும்) -->
+              <form id="contactForm" method="POST" action="{% url 'contactus' %}">
+                {% csrf_token %}
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="veC-field">
+                      <label class="veC-label">Full Name</label>
+                      <div class="veC-inputWrap">
+                        <span class="veC-inIco"><i class="fa-solid fa-user"></i></span>
+                        <input class="veC-input" type="text" id="name" name="name" placeholder="Enter full name" required>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="veC-field">
+                      <label class="veC-label">Email Address</label>
+                      <div class="veC-inputWrap">
+                        <span class="veC-inIco"><i class="fa-solid fa-envelope"></i></span>
+                        <input class="veC-input" type="email" id="email" name="email" placeholder="Enter email" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="veC-field">
+                  <label class="veC-label">Mobile Number</label>
+                  <div class="veC-inputWrap">
+                    <span class="veC-inIco"><i class="fa-solid fa-phone"></i></span>
+                    <input class="veC-input" type="text" id="mobile" name="mobile" placeholder="10 digit mobile number" maxlength="10" required>
+                  </div>
+                </div>
+
+                <div class="veC-field">
+                  <label class="veC-label">Message</label>
+                  <div class="veC-inputWrap">
+                    <span class="veC-inIco"><i class="fa-solid fa-message"></i></span>
+                    <textarea class="veC-input" id="message" name="message" placeholder="Write your message..." required></textarea>
+                  </div>
+                </div>
+
+                <button class="veC-btn" type="submit">
+                  Send Message <i class="fa-solid fa-paper-plane ms-1"></i>
+                </button>
+
+                <div class="veC-note">
+                  We respect your privacy. Your details will be used only for support.
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script>
+  // ✅ simple validation
+  document.getElementById("contactForm").addEventListener("submit", function(e){
+    const name = document.getElementById("name").value.trim();
+    const mobile = document.getElementById("mobile").value.trim();
+
+    if(!/^[A-Za-z\s.]+$/.test(name)){
+      e.preventDefault();
+      alert("Name only letters & spaces allowed.");
+      return;
+    }
+
+    if(!/^[0-9]{10}$/.test(mobile)){
+      e.preventDefault();
+      alert("Mobile number must be exactly 10 digits.");
+      return;
+    }
+  });
+</script>
+{% endblock script %}

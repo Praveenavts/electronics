@@ -1,0 +1,438 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}Track Order{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<style>
+  :root{
+    --brand:#0a1f63;
+    --yellow:#FFD700;
+    --yellow2:#ffb400;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:#e5e7eb;
+    --bg:#f6f8ff;
+    --card:#ffffff;
+    --shadow: 0 18px 70px rgba(2,6,23,.10);
+    --r16:16px;
+    --r22:22px;
+    --r28:28px;
+  }
+
+  .to-wrap{
+    background:
+      radial-gradient(900px 420px at 10% 0%, rgba(255,215,0,.16), transparent 60%),
+      radial-gradient(900px 420px at 90% 10%, rgba(255,180,0,.12), transparent 60%),
+      var(--bg);
+    padding: 26px 0 60px;
+    min-height: 75vh;
+  }
+
+  .to-shell{
+    background: var(--card);
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r28);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .to-top{
+    padding: 14px 16px;
+    background: linear-gradient(180deg,#fff,#f7f9ff);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .to-title{
+    margin:0;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 20px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .to-title i{ color: var(--yellow2); }
+
+  .to-pill{
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 1100;
+    border: 1px solid rgba(0,0,0,.06);
+    background: rgba(255,215,0,.28);
+    color:#7a4b00;
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+  }
+
+  .to-grid{
+    display:grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: 0;
+  }
+
+  /* LEFT: products card */
+  .to-left{
+    padding: 16px;
+    border-right: 1px solid rgba(0,0,0,.06);
+    background: linear-gradient(180deg,#ffffff,#f3f6ff);
+  }
+
+  .to-card{
+    background:#fff;
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r22);
+    padding: 14px;
+    box-shadow: 0 12px 40px rgba(2,6,23,.06);
+  }
+
+  .to-arrive{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 16px;
+    background: rgba(255,215,0,.15);
+  }
+  .to-arrive b{ font-weight: 1100; color: var(--ink); }
+  .to-arrive span{
+    font-weight: 1100;
+    color: var(--brand);
+    background: rgba(10,31,99,.06);
+    border: 1px solid rgba(0,0,0,.06);
+    padding: 7px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+  }
+
+  .to-items{
+    margin-top: 12px;
+    display:grid;
+    gap: 10px;
+  }
+
+  .to-item{
+    display:flex;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 18px;
+    border: 1px solid rgba(0,0,0,.06);
+    background: #fff;
+    align-items:center;
+  }
+
+  .to-thumb{
+    width: 70px;
+    height: 70px;
+    border-radius: 18px;
+    border: 1px solid rgba(0,0,0,.08);
+    overflow:hidden;
+    background:#fff;
+    display:grid;
+    place-items:center;
+    flex:0 0 auto;
+  }
+  .to-thumb img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+  }
+
+  .to-itemInfo{ flex:1 1 auto; min-width: 0; }
+  .to-itemName{
+    margin:0;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 14px;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+  }
+  .to-itemSub{
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-weight: 900;
+    font-size: 12px;
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .to-price{
+    font-weight: 1200;
+    color: #111827;
+  }
+
+  /* RIGHT: stepper + info */
+  .to-right{
+    padding: 16px;
+    background:#fff;
+  }
+
+  .to-stepper{
+    background:#fff;
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r22);
+    padding: 14px 14px 8px;
+    box-shadow: 0 12px 40px rgba(2,6,23,.06);
+  }
+
+  .to-stepTitle{
+    margin: 0 0 12px;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 14px;
+    display:flex;
+    align-items:center;
+    gap: 8px;
+  }
+  .to-stepTitle i{ color: var(--yellow2); }
+
+  .to-steps{
+    position: relative;
+    margin: 0;
+    padding: 0 0 0 10px;
+    list-style:none;
+  }
+
+  .to-steps::before{
+    content:"";
+    position:absolute;
+    left: 18px;
+    top: 8px;
+    bottom: 10px;
+    width: 3px;
+    border-radius: 999px;
+    background: rgba(10,31,99,.10);
+  }
+
+  .to-step{
+    position: relative;
+    display:flex;
+    gap: 12px;
+    padding: 0 0 14px 0;
+    align-items:flex-start;
+  }
+
+  .to-dot{
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display:grid;
+    place-items:center;
+    border: 2px solid rgba(10,31,99,.18);
+    background:#fff;
+    color: rgba(10,31,99,.60);
+    font-size: 14px;
+    font-weight: 1100;
+    flex:0 0 auto;
+    z-index: 2;
+  }
+
+  .to-stepText{
+    padding-top: 5px;
+    min-width:0;
+  }
+  .to-stepText b{
+    display:block;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 13px;
+  }
+  .to-stepText small{
+    display:block;
+    color: var(--muted);
+    font-weight: 900;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  /* Active step */
+  .to-step.active .to-dot{
+    border-color: rgba(255,180,0,.55);
+    background: rgba(255,215,0,.90);
+    color:#111827;
+    box-shadow: 0 12px 30px rgba(255,180,0,.25);
+  }
+
+  /* Completed steps (before active) */
+  .to-step.done .to-dot{
+    border-color: rgba(16,185,129,.35);
+    background: rgba(16,185,129,.14);
+    color: #065f46;
+  }
+
+  /* info boxes */
+  .to-info{
+    margin-top: 12px;
+    display:grid;
+    gap: 10px;
+  }
+  .to-box{
+    background:#fff;
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--r22);
+    padding: 12px;
+    box-shadow: 0 12px 40px rgba(2,6,23,.06);
+  }
+  .to-box h4{
+    margin:0 0 8px;
+    font-weight: 1100;
+    color: var(--ink);
+    font-size: 14px;
+    display:flex;
+    align-items:center;
+    gap: 8px;
+  }
+  .to-box h4 i{ color: var(--yellow2); }
+  .to-box p{
+    margin: 0;
+    color: #1f2937;
+    font-weight: 850;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  .to-link{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    margin-top: 10px;
+    color: var(--brand);
+    font-weight: 1100;
+    text-decoration:none;
+  }
+  .to-link:hover{ text-decoration: underline; }
+
+  @media (max-width: 992px){
+    .to-grid{ grid-template-columns: 1fr; }
+    .to-left{ border-right:none; border-bottom: 1px solid rgba(0,0,0,.06); }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="to-wrap">
+  <div class="container">
+
+    <div class="to-shell">
+
+      <!-- TOP BAR -->
+      <div class="to-top">
+        <h1 class="to-title"><i class="fa-solid fa-location-crosshairs"></i> Track Order</h1>
+        <span class="to-pill"><i class="fa-solid fa-truck-fast"></i> Live Status</span>
+      </div>
+
+      <div class="to-grid">
+
+        <!-- LEFT : PRODUCTS -->
+        <div class="to-left">
+          <div class="to-card">
+
+            <div class="to-arrive">
+              <b>Arriving:</b>
+              <span>{{ order.estimated_delivery_date|date:"l, d M Y" }}</span>
+            </div>
+
+            <div class="to-items">
+              {% for item in order_items %}
+              <div class="to-item">
+                <a class="to-thumb" href="{% url 'product_details' item.product.id %}">
+                  <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                </a>
+
+                <div class="to-itemInfo">
+                  <p class="to-itemName">{{ item.product.name }}</p>
+                  <div class="to-itemSub">
+                    <span>Qty: <b>{{ item.quantity }}</b></span>
+                    <span class="to-price">₹{{ item.product.price }}</span>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT : STEPPER + INFO -->
+        <div class="to-right">
+
+          <!-- STEPPER -->
+          <div class="to-stepper">
+            <p class="to-stepTitle"><i class="fa-solid fa-route"></i> Delivery Progress</p>
+
+            <ul class="to-steps">
+        
+              {% for step in status_steps %}
+              <li class="to-step {% if step == order.get_status_display %}active{% endif %}">
+                <div class="to-dot">
+                  {% if step == order.get_status_display %}
+                    <i class="fa-solid fa-bolt"></i>
+                  {% else %}
+                    <i class="fa-solid fa-check"></i>
+                  {% endif %}
+                </div>
+                <div class="to-stepText">
+                  <b>{{ step }}</b>
+                  <!-- <small>
+                    {% if step == order.get_status_display %}
+                      Current status
+                    {% else %}
+                      Pending / Completed
+                    {% endif %}
+                  </small> -->
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <!-- INFO BOXES -->
+          <div class="to-info">
+
+            <div class="to-box">
+              <h4><i class="fa-solid fa-house"></i> Shipping Address</h4>
+              <p>
+                {{ order.billing_address.first_name }} {{ order.billing_address.last_name }}<br>
+                {{ order.billing_address.phone }}<br>
+                {{ order.billing_address.email }}<br>
+                {{ order.billing_address.address }}<br>
+                {{ order.billing_address.city }}, {{ order.billing_address.state }} - {{ order.billing_address.pincode }}
+              </p>
+            </div>
+
+            <div class="to-box">
+              <h4><i class="fa-solid fa-circle-info"></i> Order Info</h4>
+              <p>
+                Order ID: <b>#{{ order.id }}</b><br>
+                Status: <b>{{ order.get_status_display }}</b>
+              </p>
+
+              <a class="to-link" href="{% url 'ourorders' %}">
+                View Order Details <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}{% endblock script %}

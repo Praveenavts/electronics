@@ -1,0 +1,33 @@
+{% extends 'myapp/layout/base.html' %}
+{% load static %}
+
+{% block title %}   
+    Success page
+{% endblock title %}
+
+{% block content %}
+<div style="padding-top: 90px;" class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="alert alert-success text-center" role="alert">
+          <h4  class="alert-heading">Payment Successful!</h4>
+          <p>Thank you for your order. We have received your payment and your order will be processed soon.</p>
+          <hr>
+          {% if order.id %}
+          <a href="{% url 'download_invoice' order.id %}" class="btn btn-warning" download>Download Invoice</a>
+          {% else %}
+            <p>Invoice not available.</p>
+        {% endif %}
+          <br>
+          <a class="btn btn-primary mt-5" href="{% url 'home' %}"> Continue Shopping With Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock script %}
